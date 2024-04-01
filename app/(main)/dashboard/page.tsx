@@ -1,3 +1,7 @@
-export default function HomePage() {
-	return <section>Dashboard page</section>;
+export default function DashboardPage() {
+	return (
+		<div>
+			<p>Dashboard page</p>
+		</div>
+	);
 }

@@ -9,7 +9,7 @@ export const config = {
 		 * - _next/image (image optimization files)
 		 * - favicon.ico (favicon file)
 		 */
-		"/((?!api|_next/static|_next/image|favicon.ico|login|register).*)",
+		"/((?!api|_next/static|_next/image|favicon.ico).*)",
 	],
 };
 
@@ -17,7 +17,6 @@ export function middleware(req: NextRequest) {
 	const res = NextResponse.next();
 
 	const authCookie = req.cookies.get("auth_session");
-	// console.log(authCookie);
 
 	return res;
 }

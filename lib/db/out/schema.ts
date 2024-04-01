@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
 	date,
 	integer,
@@ -7,7 +8,6 @@ import {
 	serial,
 	text,
 	timestamp,
-	unique,
 	varchar,
 } from "drizzle-orm/pg-core";
 
@@ -104,28 +104,41 @@ export const customerDemographics = pgTable("customer_demographics", {
 	customerDesc: text("customer_desc"),
 });
 
+export const user = pgTable("user", {
+	id: text("id").primaryKey().notNull(),
+	username: text("username").unique().notNull(),
+	hashedPassword: text("hashed_password").notNull(),
+});
+
+export const userRelations = relations(user, ({ one }) => ({
+	sessions: one(session, {
+		fields: [user.id],
+		references: [session.userId],
+	}),
+	employee: one(employees, {
+		fields: [user.id],
+		references: [employees.userId],
+	}),
+}));
+
 export const session = pgTable("session", {
 	id: text("id").primaryKey().notNull(),
-	userId: text("user_id").notNull(),
+	userId: text("user_id")
+		.notNull()
+		.unique()
+		.references(() => user.id),
 	expiresAt: timestamp("expires_at", {
 		withTimezone: true,
 		mode: "date",
 	}).notNull(),
 });
 
-export const user = pgTable(
-	"user",
-	{
-		id: text("id").primaryKey().notNull(),
-		username: text("username").notNull(),
-		hashedPassword: text("hashed_password").notNull(),
-	},
-	(table) => {
-		return {
-			userUsernameUnique: unique("user_username_unique").on(table.username),
-		};
-	},
-);
+export const sessionRelations = relations(session, ({ one }) => ({
+	user: one(user, {
+		fields: [session.userId],
+		references: [user.id],
+	}),
+}));
 
 export const employees = pgTable("employees", {
 	employeeId: serial("employee_id").primaryKey().notNull(),
@@ -146,7 +159,21 @@ export const employees = pgTable("employees", {
 	notes: text("notes"),
 	reportsTo: integer("reports_to"),
 	photoPath: varchar("photo_path", { length: 255 }),
+	userId: text("user_id")
+		.unique()
+		.references(() => user.id),
 });
+
+export const employeeRelations = relations(employees, ({ one }) => ({
+	user: one(user, {
+		fields: [employees.userId],
+		references: [user.id],
+	}),
+	reportsTo: one(employees, {
+		fields: [employees.reportsTo],
+		references: [employees.employeeId],
+	}),
+}));
 
 export const categories = pgTable("categories", {
 	categoryId: serial("category_id").primaryKey().notNull(),
