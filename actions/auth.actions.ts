@@ -1,6 +1,9 @@
 "use server";
+import { db } from "@/db/client";
+import { userTable } from "@/db/schema";
 import { lucia, validateRequest } from "@/lib/auth";
-import { db } from "@/lib/db";
+import { wait } from "@/lib/utils";
+import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { Argon2id } from "oslo/password";
@@ -12,7 +15,7 @@ export type FormState = {
 };
 
 export async function login(prevState: FormState, formData: FormData) {
-	await new Promise((resolve) => setTimeout(resolve, 1000));
+	await wait(5000);
 
 	const data = Object.fromEntries(formData);
 	const parsed = loginSchema.safeParse(data);
@@ -22,23 +25,27 @@ export async function login(prevState: FormState, formData: FormData) {
 			message: "Invalid credentials",
 		};
 	}
-	console.log(data);
 
 	const { username, password } = parsed.data;
 
-	const existingUser = await db.query.user.findFirst({
-		where: (user, { eq }) => eq(user.username, username),
-	});
+	const rows = await db
+		.select()
+		.from(userTable)
+		.where(eq(userTable.username, username));
 
-	console.log(existingUser);
+	let foundUser = null;
+	if (rows.length > 0) {
+		foundUser = rows[0];
+	}
 
-	if (!existingUser) {
+	if (!foundUser) {
 		return {
 			message: "Invalid username or password.",
 		};
 	}
+
 	const validPassword = await new Argon2id().verify(
-		existingUser.hashedPassword,
+		foundUser.hashedPassword,
 		password,
 	);
 	if (!validPassword) {
@@ -47,7 +54,7 @@ export async function login(prevState: FormState, formData: FormData) {
 			fields: parsed.data,
 		};
 	}
-	const session = await lucia.createSession(existingUser.id, {});
+	const session = await lucia.createSession(foundUser.id, {});
 	const sessionCookie = lucia.createSessionCookie(session.id);
 	cookies().set(
 		sessionCookie.name,
@@ -60,9 +67,7 @@ export async function login(prevState: FormState, formData: FormData) {
 export async function logout() {
 	const { session } = await validateRequest();
 	if (!session) {
-		return {
-			error: "Unauthorized",
-		};
+		redirect("/login");
 	}
 
 	await lucia.invalidateSession(session.id);
