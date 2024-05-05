@@ -1,13 +1,16 @@
 import { defineConfig } from "drizzle-kit";
 
+const connectionString = process.env.CONNECTION_STRING;
+
+if (!connectionString) throw new Error("Database url must be defined.");
+
 export default defineConfig({
 	driver: "pg",
 	dbCredentials: {
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
-		connectionString: process.env.DATABASE_URL!,
+		connectionString: connectionString,
 	},
-	out: "./lib/db/out/",
-	schema: "./lib/db/out/schema.ts",
+	schema: "./db/schema.ts",
+	out: "./db/drizzle",
 	verbose: true,
 	strict: true,
 	introspect: {
