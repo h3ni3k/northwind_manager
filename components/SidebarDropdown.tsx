@@ -43,11 +43,11 @@ export default function SidebarDropdown({
 			<CollapsibleContent className="w-full">
 				{menu.submenus.map((submenu) => (
 					<Link
+						key={submenu.name}
 						href={submenu.href}
 						className="flex w-full flex-row items-center justify-start"
 					>
 						<Button
-							key={submenu.name}
 							variant={"ghost"}
 							className="w-full flex flex-row items-center justify-start pl-8 text-lg"
 						>
