@@ -40,26 +40,26 @@ async function clearData() {
 	//TODO: Rewrite this to nuke database and recreate it from template
 	await db.delete(schema.sessionTable);
 	await db.delete(schema.userTable);
-	await db.delete(schema.orderDetails);
-	await db.delete(schema.orders);
-	await db.delete(schema.orderDetailsStatus);
-	await db.delete(schema.purchaseOrderDetails);
-	await db.delete(schema.purchaseOrders);
-	await db.delete(schema.purchaseOrderStatus);
-	await db.delete(schema.productVendors);
-	await db.delete(schema.contacts);
-	await db.delete(schema.companies);
-	await db.delete(schema.companyTypes);
-	await db.delete(schema.regions);
-	await db.delete(schema.taxStatus);
-	await db.delete(schema.orderStatus);
-	await db.delete(schema.stockTakes);
-	await db.delete(schema.products);
-	await db.delete(schema.categories);
-	await db.delete(schema.employeePrivileges);
-	await db.delete(schema.privileges);
-	await db.delete(schema.employees);
-	await db.delete(schema.titles);
+	await db.delete(schema.orderDetailsTable);
+	await db.delete(schema.ordersTable);
+	await db.delete(schema.orderDetailsStatusTable);
+	await db.delete(schema.purchaseOrderDetailsTable);
+	await db.delete(schema.purchaseOrdersTable);
+	await db.delete(schema.purchaseOrderStatusTable);
+	await db.delete(schema.productVendorsTable);
+	await db.delete(schema.contactsTable);
+	await db.delete(schema.companiesTable);
+	await db.delete(schema.companyTypesTable);
+	await db.delete(schema.regionsTable);
+	await db.delete(schema.taxStatusTable);
+	await db.delete(schema.orderStatusTable);
+	await db.delete(schema.stockTakesTable);
+	await db.delete(schema.productsTable);
+	await db.delete(schema.categoriesTable);
+	await db.delete(schema.employeePrivilegesTable);
+	await db.delete(schema.privilegesTable);
+	await db.delete(schema.employeesTable);
+	await db.delete(schema.titlesTable);
 }
 
 async function main() {
@@ -81,7 +81,7 @@ async function main() {
 	]);
 
 	//* Company types
-	const companyTypes: InferInsertModel<typeof schema.companyTypes>[] = [
+	const companyTypes: InferInsertModel<typeof schema.companyTypesTable>[] = [
 		{
 			companyType: "Customer",
 		},
@@ -92,7 +92,7 @@ async function main() {
 			companyType: "Vendor",
 		},
 	];
-	await db.insert(schema.companyTypes).values(companyTypes);
+	await db.insert(schema.companyTypesTable).values(companyTypes);
 
 	//* Regions
 	const regions = [
@@ -334,14 +334,14 @@ async function main() {
 		},
 	];
 	for (const region of regions) {
-		await db.insert(schema.regions).values({
+		await db.insert(schema.regionsTable).values({
 			regionName: region.name,
 			regionAbbrev: region.abbreviation,
 		});
 	}
 
 	//* Tax status
-	const taxStatuses: InferInsertModel<typeof schema.taxStatus>[] = [
+	const taxStatuses: InferInsertModel<typeof schema.taxStatusTable>[] = [
 		{
 			taxStatus: "Tax Exempt",
 		},
@@ -349,10 +349,10 @@ async function main() {
 			taxStatus: "Taxable",
 		},
 	];
-	await db.insert(schema.taxStatus).values(taxStatuses);
+	await db.insert(schema.taxStatusTable).values(taxStatuses);
 
 	//* Order status
-	const orderStatuses: InferInsertModel<typeof schema.orderStatus>[] = [
+	const orderStatuses: InferInsertModel<typeof schema.orderStatusTable>[] = [
 		{
 			orderStatusCode: "CLO",
 			orderStatusName: "Closed",
@@ -379,11 +379,11 @@ async function main() {
 			sortOrder: 35,
 		},
 	];
-	await db.insert(schema.orderStatus).values(orderStatuses);
+	await db.insert(schema.orderStatusTable).values(orderStatuses);
 
 	//* Purchase order statuses
 	const purchaseOrderStatuses: InferInsertModel<
-		typeof schema.purchaseOrderStatus
+		typeof schema.purchaseOrderStatusTable
 	>[] = [
 		{ statusName: "New", sortOrder: 10 },
 		{ statusName: "Submitted", sortOrder: 20 },
@@ -391,10 +391,12 @@ async function main() {
 		{ statusName: "Received", sortOrder: 40 },
 		{ statusName: "Closed", sortOrder: 50 },
 	];
-	await db.insert(schema.purchaseOrderStatus).values(purchaseOrderStatuses);
+	await db
+		.insert(schema.purchaseOrderStatusTable)
+		.values(purchaseOrderStatuses);
 
 	//* Titles
-	const titles: InferInsertModel<typeof schema.titles>[] = [
+	const titles: InferInsertModel<typeof schema.titlesTable>[] = [
 		{
 			title: "Mr",
 		},
@@ -402,25 +404,25 @@ async function main() {
 			title: "Mrs",
 		},
 	];
-	await db.insert(schema.titles).values(titles);
+	await db.insert(schema.titlesTable).values(titles);
 
 	//* Categories
-	const categories: InferInsertModel<typeof schema.categories>[] = [];
+	const categories: InferInsertModel<typeof schema.categoriesTable>[] = [];
 	for (let i = 0; i < 20; i++) {
 		const categoryName = faker.commerce.department();
-		const category: InferInsertModel<typeof schema.categories> = {
+		const category: InferInsertModel<typeof schema.categoriesTable> = {
 			categoryName,
 			categoryDesc: faker.commerce.productDescription(),
 			categoryCode: categoryName.substring(0, 3),
 		};
 		categories.push(category);
 	}
-	await db.insert(schema.categories).values(categories);
+	await db.insert(schema.categoriesTable).values(categories);
 
 	//* Products
-	const products: InferInsertModel<typeof schema.products>[] = [];
+	const products: InferInsertModel<typeof schema.productsTable>[] = [];
 	for (let i = 0; i < 20; i++) {
-		const product: InferInsertModel<typeof schema.products> = {
+		const product: InferInsertModel<typeof schema.productsTable> = {
 			categoryId: faker.number.int({ min: 1, max: 20 }),
 			discontinued: false,
 			minimumReorderQuantity: faker.number.int({ min: 20, max: 50 }),
@@ -436,15 +438,15 @@ async function main() {
 		products.push(product);
 	}
 	const createdProducts = await db
-		.insert(schema.products)
+		.insert(schema.productsTable)
 		.values(products)
-		.onConflictDoNothing({ target: schema.products.productCode })
+		.onConflictDoNothing({ target: schema.productsTable.productCode })
 		.returning();
 
 	//* Companies
-	const companies: InferInsertModel<typeof schema.companies>[] = [];
+	const companies: InferInsertModel<typeof schema.companiesTable>[] = [];
 	for (let i = 0; i < 20; i++) {
-		const company: InferInsertModel<typeof schema.companies> = {
+		const company: InferInsertModel<typeof schema.companiesTable> = {
 			companyName: faker.company.name().substring(0, 50),
 			companyTypeId: faker.number.int({ min: 1, max: 3 }),
 			businessPhone: faker.string.numeric(9),
@@ -458,12 +460,13 @@ async function main() {
 		companies.push(company);
 	}
 	const createdCompanies = await db
-		.insert(schema.companies)
+		.insert(schema.companiesTable)
 		.values(companies)
 		.returning();
 
 	//* Product vendors
-	const productVendors: InferInsertModel<typeof schema.productVendors>[] = [];
+	const productVendors: InferInsertModel<typeof schema.productVendorsTable>[] =
+		[];
 	const vendors = createdCompanies.filter((c) => c.companyTypeId === 3);
 	for (let i = 0; i < 20; i++) {
 		const productId =
@@ -471,18 +474,18 @@ async function main() {
 				.productId;
 		const vendorId =
 			vendors[Math.floor(Math.random() * vendors.length)].companyId;
-		const productVendor: InferInsertModel<typeof schema.productVendors> = {
+		const productVendor: InferInsertModel<typeof schema.productVendorsTable> = {
 			productId: productId,
 			vendorId: vendorId,
 		};
 		productVendors.push(productVendor);
 	}
-	await db.insert(schema.productVendors).values(productVendors);
+	await db.insert(schema.productVendorsTable).values(productVendors);
 
 	//* Contacts
-	const contacts: InferInsertModel<typeof schema.contacts>[] = [];
+	const contacts: InferInsertModel<typeof schema.contactsTable>[] = [];
 	for (let i = 0; i < 20; i++) {
-		const contact: InferInsertModel<typeof schema.contacts> = {
+		const contact: InferInsertModel<typeof schema.contactsTable> = {
 			companyId:
 				createdCompanies[Math.floor(Math.random() * createdCompanies.length)]
 					.companyId,
@@ -495,12 +498,12 @@ async function main() {
 		};
 		contacts.push(contact);
 	}
-	await db.insert(schema.contacts).values(contacts);
+	await db.insert(schema.contactsTable).values(contacts);
 
 	//* Employees
-	const employees: InferInsertModel<typeof schema.employees>[] = [];
+	const employees: InferInsertModel<typeof schema.employeesTable>[] = [];
 	for (let i = 0; i < 20; i++) {
-		const employee: InferInsertModel<typeof schema.employees> = {
+		const employee: InferInsertModel<typeof schema.employeesTable> = {
 			firstName: faker.person.firstName(),
 			lastName: faker.person.lastName(),
 			emailAddress: faker.internet.email(),
@@ -512,12 +515,12 @@ async function main() {
 		employees.push(employee);
 	}
 	const createdEmployees = await db
-		.insert(schema.employees)
+		.insert(schema.employeesTable)
 		.values(employees)
 		.returning();
 
 	//* Privleges
-	await db.insert(schema.privileges).values([
+	await db.insert(schema.privilegesTable).values([
 		{
 			privileveName: "Purchase Approvals",
 		},
@@ -525,7 +528,7 @@ async function main() {
 
 	//* Employee privileges
 	for (let i = 0; i < 6; i++) {
-		await db.insert(schema.employeePrivileges).values([
+		await db.insert(schema.employeePrivilegesTable).values([
 			{
 				employeeId:
 					createdEmployees[Math.floor(Math.random() * createdEmployees.length)]
@@ -536,10 +539,10 @@ async function main() {
 	}
 
 	//* Orders
-	const orders: InferInsertModel<typeof schema.orders>[] = [];
+	const orders: InferInsertModel<typeof schema.ordersTable>[] = [];
 	const nonVendors = createdCompanies.filter((c) => c.companyTypeId !== 3);
 	for (let i = 0; i < 20; i++) {
-		const order: InferInsertModel<typeof schema.orders> = {
+		const order: InferInsertModel<typeof schema.ordersTable> = {
 			employeeId:
 				createdEmployees[Math.floor(Math.random() * createdEmployees.length)]
 					.employeeId,
@@ -557,12 +560,12 @@ async function main() {
 		orders.push(order);
 	}
 	const createdOrders = await db
-		.insert(schema.orders)
+		.insert(schema.ordersTable)
 		.values(orders)
 		.returning();
 
 	//* Order details status
-	await db.insert(schema.orderDetailsStatus).values([
+	await db.insert(schema.orderDetailsStatusTable).values([
 		{
 			orderDetailsStatusName: "New",
 			sortOrder: 10,
@@ -590,9 +593,9 @@ async function main() {
 	]);
 
 	//* Order details
-	const orderDetails: InferInsertModel<typeof schema.orderDetails>[] = [];
+	const orderDetails: InferInsertModel<typeof schema.orderDetailsTable>[] = [];
 	for (let i = 0; i < createdOrders.length * 2; i++) {
-		const orderDetail: InferInsertModel<typeof schema.orderDetails> = {
+		const orderDetail: InferInsertModel<typeof schema.orderDetailsTable> = {
 			orderId:
 				createdOrders[Math.floor(Math.random() * createdOrders.length)].orderId,
 			productId:
@@ -607,12 +610,13 @@ async function main() {
 		};
 		orderDetails.push(orderDetail);
 	}
-	await db.insert(schema.orderDetails).values(orderDetails);
+	await db.insert(schema.orderDetailsTable).values(orderDetails);
 
 	//* Purchase orders
-	const purchaseOrders: InferInsertModel<typeof schema.purchaseOrders>[] = [];
+	const purchaseOrders: InferInsertModel<typeof schema.purchaseOrdersTable>[] =
+		[];
 	for (let i = 0; i < 20; i++) {
-		const purchaseOrder: InferInsertModel<typeof schema.purchaseOrders> = {
+		const purchaseOrder: InferInsertModel<typeof schema.purchaseOrdersTable> = {
 			vendorId: vendors[Math.floor(Math.random() * vendors.length)].companyId,
 			submittedBy:
 				createdEmployees[Math.floor(Math.random() * createdEmployees.length)]
@@ -635,17 +639,17 @@ async function main() {
 		purchaseOrders.push(purchaseOrder);
 	}
 	const createdPurchaseOrders = await db
-		.insert(schema.purchaseOrders)
+		.insert(schema.purchaseOrdersTable)
 		.values(purchaseOrders)
 		.returning();
 
 	//* Purchase orders details
 	const purchaseOrdersDetails: InferInsertModel<
-		typeof schema.purchaseOrderDetails
+		typeof schema.purchaseOrderDetailsTable
 	>[] = [];
 	for (let i = 0; i < 40; i++) {
 		const purchaseOrderDetail: InferInsertModel<
-			typeof schema.purchaseOrderDetails
+			typeof schema.purchaseOrderDetailsTable
 		> = {
 			purchaseOrderId:
 				createdPurchaseOrders[
@@ -660,12 +664,14 @@ async function main() {
 		};
 		purchaseOrdersDetails.push(purchaseOrderDetail);
 	}
-	await db.insert(schema.purchaseOrderDetails).values(purchaseOrdersDetails);
+	await db
+		.insert(schema.purchaseOrderDetailsTable)
+		.values(purchaseOrdersDetails);
 
 	//* Stock take
-	const stockTakes: InferInsertModel<typeof schema.stockTakes>[] = [];
+	const stockTakes: InferInsertModel<typeof schema.stockTakesTable>[] = [];
 	for (let i = 0; i < createdProducts.length; i++) {
-		const stockTake: InferInsertModel<typeof schema.stockTakes> = {
+		const stockTake: InferInsertModel<typeof schema.stockTakesTable> = {
 			productId:
 				createdProducts[Math.floor(Math.random() * createdProducts.length)]
 					.productId,
@@ -675,7 +681,7 @@ async function main() {
 		};
 		stockTakes.push(stockTake);
 	}
-	await db.insert(schema.stockTakes).values(stockTakes);
+	await db.insert(schema.stockTakesTable).values(stockTakes);
 
 	await pool.end();
 }

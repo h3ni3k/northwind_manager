@@ -1,9 +1,9 @@
 "use server";
 
 import { db } from "@/db/client";
-import { OrderTableSelect, employees, orders } from "@/db/schema";
+import { OrdersSelect } from "@/db/types";
 
-export type Order = OrderTableSelect & {
+export type Order = OrdersSelect & {
 	employee: { firstName: string; lastName: string };
 	customer: { companyName: string };
 	taxStatus: { taxStatus: string };
@@ -12,7 +12,7 @@ export type Order = OrderTableSelect & {
 };
 
 export async function getAllOrders(): Promise<Order[]> {
-	return await db.query.orders.findMany({
+	return await db.query.ordersTable.findMany({
 		with: {
 			employee: {
 				columns: {
