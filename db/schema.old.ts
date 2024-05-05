@@ -12,8 +12,8 @@ import {
 } from "drizzle-orm/pg-core";
 
 export const usStates = pgTable("us_states", {
-	stateId: serial("state_id").primaryKey().notNull(),
-	stateName: varchar("state_name", { length: 100 }),
+	stateId: serial("region_id").primaryKey().notNull(),
+	stateName: varchar("region_name", { length: 100 }),
 	stateAbbr: varchar("state_abbr", { length: 2 }),
 	stateRegion: varchar("state_region", { length: 50 }),
 });
