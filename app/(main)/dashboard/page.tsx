@@ -1,7 +1,5 @@
-export default function DashboardPage() {
-	return (
-		<div>
-			<p>Dashboard page</p>
-		</div>
-	);
+import React from "react";
+
+export default async function DashboardPage() {
+	return <section className="flex-1">Dashboard</section>;
 }

@@ -24,7 +24,8 @@ import DataTablePagination from "./DataTablePagination";
 import DataTableToolbar from "./DataTableToolbar";
 
 interface DataTableProps<TData, TValue> {
-	columns: ColumnDef<TData, TValue>[];
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	columns: ColumnDef<TData, any>[];
 	data: TData[];
 }
 

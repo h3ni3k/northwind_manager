@@ -16,7 +16,7 @@ export default function DataTablePagination<TData>({
 	table,
 }: DataTablePaginationProps<TData>) {
 	return (
-		<div className="flex items-center">
+		<div className="flex items-center justify-between">
 			<div>
 				Page {table.getState().pagination.pageIndex + 1} of{" "}
 				{table.getPageCount()}

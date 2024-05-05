@@ -1,6 +1,5 @@
 "use client";
 import { Checkbox } from "@/components/ui/checkbox";
-// import { customers } from "@prisma/client";
 import { createColumnHelper } from "@tanstack/react-table";
 import DataTableColumnHeader from "../DataTableColumnHeader";
 
@@ -29,10 +28,6 @@ export const defaultColumns = [
 		enableHiding: false,
 		enableSorting: false,
 	}),
-	// columnHelper.accessor("customerId", {
-	// 	id: "ID",
-	// 	header: "ID",
-	// }),
 	columnHelper.accessor("shortName", {
 		id: "Short name",
 		header: ({ column }) => (

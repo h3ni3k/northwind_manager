@@ -5,14 +5,12 @@ import { ReactNode, createContext, useContext } from "react";
 
 type ContextType = Awaited<ReturnType<typeof validateRequest>>;
 
-const SessionContext = createContext<ContextType>({
+export const SessionContext = createContext<ContextType>({
 	session: null,
 	user: null,
 });
 
-export const useSession = () => useContext(SessionContext);
-
-function SessionProvider({
+export function SessionProvider({
 	children,
 	value,
 }: { children: ReactNode; value: ContextType }) {
@@ -21,4 +19,4 @@ function SessionProvider({
 	);
 }
 
-export default SessionProvider;
+export const useSession = () => useContext(SessionContext);

@@ -67,8 +67,9 @@ export default function DataTableToolbar<TData>({
 								checked={col.getIsVisible()}
 								onCheckedChange={(v) => col.toggleVisibility(!!v)}
 							>
-								{col.id}
-								{/* {col.columnDef.header?.toString()} */}
+								{/* {col.id} */}
+
+								{col.columnDef.header?.toString()}
 							</DropdownMenuCheckboxItem>
 						))}
 				</DropdownMenuContent>
