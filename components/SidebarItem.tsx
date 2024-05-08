@@ -26,9 +26,6 @@ export default function SidebarItem({
 	className,
 }: SidebarItemProps) {
 	const currentPath = usePathname();
-	const segment = useSelectedLayoutSegment();
-	const segments = useSelectedLayoutSegments();
-	console.log({ currentPath, segment, segments });
 
 	const active = href === currentPath;
 
@@ -39,10 +36,11 @@ export default function SidebarItem({
 		>
 			<Button
 				variant={"ghost"}
+				type="button"
 				className={cn(
 					className,
-					"w-full flex flex-row items-center justify-start text-lg",
-					active ? "bg-blue-300" : null,
+					"w-full flex flex-row items-center justify-start text-lg hover:bg-blue-300",
+					active ? "bg-blue-400" : null,
 				)}
 			>
 				<Image src={icon} width={24} height={24} alt={""} />

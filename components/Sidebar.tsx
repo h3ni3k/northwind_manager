@@ -1,9 +1,6 @@
 import navLinks from "@/constants";
-import Image from "next/image";
 import Link from "next/link";
-import SidebarDropdown from "./SidebarDropdown";
 import SidebarItem from "./SidebarItem";
-import { Button } from "./ui/button";
 
 export default async function Sidebar() {
 	return (
@@ -13,7 +10,7 @@ export default async function Sidebar() {
 					<h3 className="text-2xl font-semibold">Northwind Traders</h3>
 				</Link>
 			</section>
-			<nav className="flex flex-col w-full flex-1 justify-start items-start p-2">
+			<nav className="flex flex-col w-full flex-1 justify-start items-start p-2 space-y-2">
 				{navLinks.map((menu) => {
 					return (
 						<SidebarItem
