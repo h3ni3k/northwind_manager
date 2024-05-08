@@ -1,45 +1,63 @@
 "use server";
 
 import { db } from "@/db/client";
-import { OrdersSelect } from "@/db/types";
+import {
+	companiesTable,
+	employeesTable,
+	orderStatusTable,
+	ordersTable,
+	taxStatusTable,
+} from "@/db/schema";
+import { eq, sql } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 
-export type Order = OrdersSelect & {
-	employee: { firstName: string; lastName: string };
-	customer: { companyName: string };
-	taxStatus: { taxStatus: string };
-	status: { orderStatusCode: string };
-	shipper: { companyName: string };
-};
+export async function getOrders() {
+	const customer = alias(companiesTable, "customer");
+	const shipper = alias(companiesTable, "shipper");
 
-export async function getAllOrders(): Promise<Order[]> {
-	return await db.query.ordersTable.findMany({
-		with: {
+	return await db
+		.select({
+			order: {
+				orderId: ordersTable.orderId,
+				orderDate: ordersTable.orderDate,
+				invoiceDate: ordersTable.invoiceDate,
+				shippedDate: ordersTable.shippedDate,
+				shippingFee: ordersTable.shippingFee,
+				taxRate: ordersTable.taxRate,
+				paymentMethod: ordersTable.paymentMethod,
+				paidDate: ordersTable.paidDate,
+				notes: ordersTable.notes,
+			},
 			employee: {
-				columns: {
-					firstName: true,
-					lastName: true,
-				},
+				firstName: employeesTable.firstName,
+				lastName: employeesTable.lastName,
 			},
 			customer: {
-				columns: {
-					companyName: true,
-				},
-			},
-			taxStatus: {
-				columns: {
-					taxStatus: true,
-				},
-			},
-			status: {
-				columns: {
-					orderStatusCode: true,
-				},
+				companyName: customer.companyName,
 			},
 			shipper: {
-				columns: {
-					companyName: true,
-				},
+				shipperName: shipper.companyName,
 			},
-		},
-	});
+			taxStatus: {
+				taxStatus: taxStatusTable.taxStatus,
+			},
+			orderStatus: {
+				orderStatus: orderStatusTable.orderStatusCode,
+			},
+		})
+		.from(ordersTable)
+		.leftJoin(
+			employeesTable,
+			eq(employeesTable.employeeId, ordersTable.employeeId),
+		)
+		.leftJoin(customer, eq(customer.companyId, ordersTable.customerId))
+		.leftJoin(shipper, eq(shipper.companyId, ordersTable.shipperId))
+		.leftJoin(
+			taxStatusTable,
+			eq(taxStatusTable.taxStatusId, ordersTable.taxStatusId),
+		)
+		.leftJoin(
+			orderStatusTable,
+			eq(orderStatusTable.orderStatusId, ordersTable.orderStatusId),
+		);
 }

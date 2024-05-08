@@ -541,7 +541,7 @@ async function main() {
 	//* Orders
 	const orders: InferInsertModel<typeof schema.ordersTable>[] = [];
 	const nonVendors = createdCompanies.filter((c) => c.companyTypeId !== 3);
-	for (let i = 0; i < 20; i++) {
+	for (let i = 0; i < 50; i++) {
 		const order: InferInsertModel<typeof schema.ordersTable> = {
 			employeeId:
 				createdEmployees[Math.floor(Math.random() * createdEmployees.length)]
