@@ -15,6 +15,20 @@
       "when": 1712960616533,
       "tag": "0001_outstanding_shriek",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1715789029967,
+      "tag": "0002_brief_adam_warlock",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1715794813817,
+      "tag": "0003_real_jamie_braddock",
+      "breakpoints": true
     }
   ]
 }

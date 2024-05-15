@@ -1,114 +1,110 @@
 import { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import {
-	categoriesTable,
-	companiesTable,
-	companyTypesTable,
-	contactsTable,
-	employeePrivilegesTable,
-	employeesTable,
-	orderDetailsStatusTable,
-	orderDetailsTable,
-	orderStatusTable,
-	ordersTable,
+	categories,
+	companies,
+	companyTypes,
+	contacts,
+	employeePrivileges,
+	employees,
+	orderDetails,
+	orderDetailsStatus,
+	orderStatus,
+	orders,
 	paymentMethodsEnum,
-	privilegesTable,
-	productVendorsTable,
-	productsTable,
-	purchaseOrderDetailsTable,
-	purchaseOrdersTable,
-	regionsTable,
-	stockTakesTable,
-	systemSettingTable,
-	taxStatusTable,
-	titlesTable,
-	userTable,
+	privileges,
+	products,
+	purchaseOrderDetails,
+	purchaseOrders,
+	regions,
+	stock,
+	systemSetting,
+	taxStatus,
+	titles,
+	users,
 } from "./schema";
 
-export type PrivilegesSelect = InferSelectModel<typeof privilegesTable>;
-export type PrivilegesInsert = InferInsertModel<typeof privilegesTable>;
+export type PrivilegesSelect = InferSelectModel<typeof privileges>;
+export type PrivilegesInsert = InferInsertModel<typeof privileges>;
 
 export type EmployeePrivilegesSelect = InferSelectModel<
-	typeof employeePrivilegesTable
+	typeof employeePrivileges
 >;
 export type EmployeePrivilegesInsert = InferInsertModel<
-	typeof employeePrivilegesTable
+	typeof employeePrivileges
 >;
 
-export type EmployeesSelect = InferSelectModel<typeof employeesTable>;
-export type EmployeesInsert = InferInsertModel<typeof employeesTable>;
+export type EmployeesSelect = InferSelectModel<typeof employees>;
+export type EmployeesInsert = InferInsertModel<typeof employees>;
 
-export type TitlesSelect = InferSelectModel<typeof titlesTable>;
-export type TitlesInsert = InferInsertModel<typeof titlesTable>;
+export type TitlesSelect = InferSelectModel<typeof titles>;
+export type TitlesInsert = InferInsertModel<typeof titles>;
 
-export type ContactsSelect = InferSelectModel<typeof contactsTable>;
-export type ContactsInsert = InferInsertModel<typeof contactsTable>;
+export type ContactsSelect = InferSelectModel<typeof contacts>;
+export type ContactsInsert = InferInsertModel<typeof contacts>;
 
-export type CompaniesSelect = InferSelectModel<typeof companiesTable>;
-export type CompaniesInsert = InferInsertModel<typeof companiesTable>;
+export type CompaniesSelect = InferSelectModel<typeof companies>;
+export type CompaniesInsert = InferInsertModel<typeof companies>;
 
-export type CompanyTypesSelect = InferSelectModel<typeof companyTypesTable>;
-export type CompanyTypesInsert = InferInsertModel<typeof companyTypesTable>;
+export type CompanyTypesSelect = InferSelectModel<typeof companyTypes>;
+export type CompanyTypesInsert = InferInsertModel<typeof companyTypes>;
 
-export type RegionsSelect = InferSelectModel<typeof regionsTable>;
-export type RegionsInsert = InferInsertModel<typeof regionsTable>;
+export type RegionsSelect = InferSelectModel<typeof regions>;
+export type RegionsInsert = InferInsertModel<typeof regions>;
 
-export type ProductVendorsSelect = InferSelectModel<typeof productVendorsTable>;
-export type ProductVendorsInsert = InferInsertModel<typeof productVendorsTable>;
+export type TaxStatusSelect = InferSelectModel<typeof taxStatus>;
+export type TaxStatusInsert = InferInsertModel<typeof taxStatus>;
 
-export type TaxStatusSelect = InferSelectModel<typeof taxStatusTable>;
-export type TaxStatusInsert = InferInsertModel<typeof taxStatusTable>;
+export type ProductsSelect = InferSelectModel<typeof products>;
+export type ProductsInsert = InferInsertModel<typeof products>;
 
-export type ProductsSelect = InferSelectModel<typeof productsTable>;
-export type ProductsInsert = InferInsertModel<typeof productsTable>;
+export type CategoriesSelect = InferSelectModel<typeof categories>;
+export type CategoriesInsert = InferInsertModel<typeof categories>;
 
-export type CategoriesSelect = InferSelectModel<typeof categoriesTable>;
-export type CategoriesInsert = InferInsertModel<typeof categoriesTable>;
+export type StockTakesSelect = InferSelectModel<typeof stock>;
+export type StockTakesInsert = InferInsertModel<typeof stock>;
 
-export type StockTakesSelect = InferSelectModel<typeof stockTakesTable>;
-export type StockTakesInsert = InferInsertModel<typeof stockTakesTable>;
+export type OrderStatusSelect = InferSelectModel<typeof orderStatus>;
+export type OrderStatusInsert = InferInsertModel<typeof orderStatus>;
 
-export type OrderStatusSelect = InferSelectModel<typeof orderStatusTable>;
-export type OrderStatusInsert = InferInsertModel<typeof orderStatusTable>;
-
-export type OrdersSelect = InferSelectModel<typeof ordersTable>;
-export type OrdersInsert = InferInsertModel<typeof ordersTable>;
+export type OrdersSelect = InferSelectModel<typeof orders>;
+export type OrdersInsert = InferInsertModel<typeof orders>;
 
 export type OrderDetailsStatusSelect = InferSelectModel<
-	typeof orderDetailsStatusTable
+	typeof orderDetailsStatus
 >;
 export type OrderDetailsStatusInsert = InferInsertModel<
-	typeof orderDetailsStatusTable
+	typeof orderDetailsStatus
 >;
 
-export type OrderDetailsSelect = InferSelectModel<typeof orderDetailsTable>;
-export type OrderDetailsInsert = InferInsertModel<typeof orderDetailsTable>;
+export type OrderDetailsSelect = InferSelectModel<typeof orderDetails>;
+export type OrderDetailsInsert = InferInsertModel<typeof orderDetails>;
 
 export type PurchaseOrderStatusSelect = InferSelectModel<
-	typeof purchaseOrderDetailsTable
+	typeof purchaseOrderDetails
 >;
 export type PurchaseOrderStatusInsert = InferInsertModel<
-	typeof purchaseOrderDetailsTable
+	typeof purchaseOrderDetails
 >;
 
-export type PurchaseOrdersSelect = InferSelectModel<typeof purchaseOrdersTable>;
-export type PurchaseOrdersInsert = InferInsertModel<typeof purchaseOrdersTable>;
+export type PurchaseOrdersSelect = InferSelectModel<typeof purchaseOrders>;
+export type PurchaseOrdersInsert = InferInsertModel<typeof purchaseOrders>;
 
 export type PurchaseOrderDetailsStatusSelect = InferSelectModel<
-	typeof purchaseOrderDetailsTable
+	typeof purchaseOrderDetails
 >;
 export type PurchaseOrderDetailsStatusInsert = InferInsertModel<
-	typeof purchaseOrderDetailsTable
+	typeof purchaseOrderDetails
 >;
 
 export type PurchaseOrderDetailsSelect = InferSelectModel<
-	typeof purchaseOrderDetailsTable
+	typeof purchaseOrderDetails
 >;
 export type PurchaseOrderDetailsInsert = InferInsertModel<
-	typeof purchaseOrderDetailsTable
+	typeof purchaseOrderDetails
 >;
 
-export type SystemSettingsSelect = InferSelectModel<typeof systemSettingTable>;
-export type SystemSettingsInsert = InferInsertModel<typeof systemSettingTable>;
+export type SystemSettingsSelect = InferSelectModel<typeof systemSetting>;
+export type SystemSettingsInsert = InferInsertModel<typeof systemSetting>;
 
-export type UsersSelect = InferSelectModel<typeof userTable>;
-export type UsersInsert = InferInsertModel<typeof userTable>;
+export type UsersSelect = InferSelectModel<typeof users>;
+export type UsersInsert = InferInsertModel<typeof users>;

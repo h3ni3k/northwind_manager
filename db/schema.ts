@@ -21,7 +21,7 @@ export const paymentMethodsEnum = pgEnum("payment_method", [
 	"Bank Transfer",
 ]);
 
-export const privilegesTable = pgTable("privileges", {
+export const privileges = pgTable("privileges", {
 	privilegeId: serial("privilege_id").primaryKey(),
 	privileveName: varchar("privilege_name", { length: 50 }),
 	createdAt: timestamp("created_at", {
@@ -35,14 +35,10 @@ export const privilegesTable = pgTable("privileges", {
 		.defaultNow(),
 });
 
-export const employeePrivilegesTable = pgTable("employee_privileges", {
+export const employeePrivileges = pgTable("employee_privileges", {
 	employeePrivilegeId: serial("employee_privilege_id").primaryKey(),
-	employeeId: integer("employee_id").references(
-		() => employeesTable.employeeId,
-	),
-	privilegeId: integer("privilege_id").references(
-		() => privilegesTable.privilegeId,
-	),
+	employeeId: integer("employee_id").references(() => employees.employeeId),
+	privilegeId: integer("privilege_id").references(() => privileges.privilegeId),
 	createdAt: timestamp("created_at", {
 		mode: "date",
 		withTimezone: true,
@@ -54,7 +50,7 @@ export const employeePrivilegesTable = pgTable("employee_privileges", {
 		.defaultNow(),
 });
 
-export const employeesTable = pgTable(
+export const employees = pgTable(
 	"employees",
 	{
 		employeeId: serial("employee_id").primaryKey(),
@@ -64,11 +60,11 @@ export const employeesTable = pgTable(
 		jobTitle: varchar("job_title", { length: 50 }),
 		primaryPhone: varchar("primary_phone", { length: 12 }),
 		secondaryPhone: varchar("secondary_phone", { length: 12 }),
-		titleId: integer("title_id").references(() => titlesTable.titleId),
+		titleId: integer("title_id").references(() => titles.titleId),
 		notes: text("notes"),
 		attachments: text("attachments"),
 		supervisorId: integer("supervisor_id").references(
-			(): AnyPgColumn => employeesTable.employeeId,
+			(): AnyPgColumn => employees.employeeId,
 		),
 		createdAt: timestamp("created_at", {
 			mode: "date",
@@ -89,16 +85,16 @@ export const employeesTable = pgTable(
 	}),
 );
 
-export const titlesTable = pgTable("titles", {
+export const titles = pgTable("titles", {
 	titleId: serial("title_id").primaryKey(),
 	title: varchar("title", { length: 255 }),
 });
 
-export const contactsTable = pgTable(
+export const contacts = pgTable(
 	"contacts",
 	{
 		contactId: serial("contact_id").primaryKey(),
-		companyId: integer("company_id").references(() => companiesTable.companyId),
+		companyId: integer("company_id").references(() => companies.companyId),
 		lastName: varchar("last_name", { length: 30 }),
 		firstName: varchar("first_name", { length: 30 }),
 		emailAddress: varchar("email", { length: 255 }),
@@ -124,23 +120,23 @@ export const contactsTable = pgTable(
 	}),
 );
 
-export const companiesTable = pgTable(
+export const companies = pgTable(
 	"companies",
 	{
 		companyId: serial("company_id").primaryKey(),
 		companyName: varchar("company_name", { length: 50 }).notNull(),
 		companyTypeId: integer("company_type_id").references(
-			() => companyTypesTable.companyTypeId,
+			() => companyTypes.companyTypeId,
 		),
 		businessPhone: varchar("business_phone", { length: 20 }),
 		address: varchar("address", { length: 255 }),
 		city: varchar("city", { length: 255 }),
-		regionId: integer("region_id").references(() => regionsTable.regionId),
+		regionId: integer("region_id").references(() => regions.regionId),
 		postalCode: varchar("postal_code", { length: 10 }),
 		website: text("website"),
 		notes: text("notes"),
 		taxStatusId: integer("tax_status_id").references(
-			() => taxStatusTable.taxStatusId,
+			() => taxStatus.taxStatusId,
 		),
 		contactId: integer("contact_id"),
 		createdAt: timestamp("created_at", {
@@ -158,7 +154,7 @@ export const companiesTable = pgTable(
 	}),
 );
 
-export const companyTypesTable = pgTable("company_types", {
+export const companyTypes = pgTable("company_types", {
 	companyTypeId: serial("company_type_id").primaryKey(),
 	companyType: varchar("company_type", { length: 50 }),
 	createdAt: timestamp("created_at", {
@@ -172,28 +168,13 @@ export const companyTypesTable = pgTable("company_types", {
 		.defaultNow(),
 });
 
-export const regionsTable = pgTable("regions", {
+export const regions = pgTable("regions", {
 	regionId: serial("region_id").primaryKey(),
 	regionAbbrev: varchar("region_abbrev", { length: 3 }),
 	regionName: varchar("region_name", { length: 50 }),
 });
 
-export const productVendorsTable = pgTable("product_vendors", {
-	productVendorId: serial("product_vendor_id").primaryKey(),
-	productId: integer("product_id").references(() => productsTable.productId),
-	vendorId: integer("vendor_id").references(() => companiesTable.companyId),
-	createdAt: timestamp("created_at", {
-		mode: "date",
-		withTimezone: true,
-	})
-		.notNull()
-		.defaultNow(),
-	modifiedAt: timestamp("modified_at", { mode: "date", withTimezone: true })
-		.notNull()
-		.defaultNow(),
-});
-
-export const taxStatusTable = pgTable("tax_status", {
+export const taxStatus = pgTable("tax_status", {
 	taxStatusId: serial("tax_status_id").primaryKey(),
 	taxStatus: varchar("tax_status", { length: 50 }).notNull(),
 	createdAt: timestamp("created_at", {
@@ -208,7 +189,7 @@ export const taxStatusTable = pgTable("tax_status", {
 	}),
 });
 
-export const productsTable = pgTable(
+export const products = pgTable(
 	"products",
 	{
 		productId: serial("product_id").primaryKey(),
@@ -228,15 +209,14 @@ export const productsTable = pgTable(
 		quantityPerUnit: varchar("quantity_per_unit", { length: 50 }),
 		discontinued: boolean("discontinued").default(false),
 		minimumReorderQuantity: integer("minimum_reorder_quantity"),
-		categoryId: integer("category_id").references(
-			() => categoriesTable.categoryId,
-		),
+		categoryId: integer("category_id").references(() => categories.categoryId),
 		createdAt: timestamp("created_at", {
 			mode: "date",
 			withTimezone: true,
 		})
 			.notNull()
 			.defaultNow(),
+		vendorId: integer("vendor_id").references(() => companies.companyId),
 		modifiedAt: timestamp("modified_at", {
 			mode: "date",
 			withTimezone: true,
@@ -247,7 +227,7 @@ export const productsTable = pgTable(
 	}),
 );
 
-export const categoriesTable = pgTable("categories", {
+export const categories = pgTable("categories", {
 	categoryId: serial("category_id").primaryKey(),
 	categoryName: varchar("category_name", { length: 255 }),
 	categoryCode: varchar("category_code", { length: 3 }),
@@ -264,12 +244,12 @@ export const categoriesTable = pgTable("categories", {
 		.defaultNow(),
 });
 
-export const stockTakesTable = pgTable("stock_take", {
+export const stock = pgTable("stock", {
 	stockTakeId: serial("stock_take_id").primaryKey(),
 	stockTakeDate: date("stock_take_date", { mode: "date" })
 		.notNull()
 		.defaultNow(),
-	productId: integer("product_id").references(() => productsTable.productId),
+	productId: integer("product_id").references(() => products.productId),
 	quantityOnHand: integer("quantity_on_hand"),
 	expectedQuantity: integer("expected_quantity"),
 	createdAt: timestamp("created_at", {
@@ -280,30 +260,30 @@ export const stockTakesTable = pgTable("stock_take", {
 		.defaultNow(),
 });
 
-export const ordersTable = pgTable("orders", {
+export const orders = pgTable("orders", {
 	orderId: serial("order_id").primaryKey(),
 	employeeId: integer("employee_id")
-		.references(() => employeesTable.employeeId)
+		.references(() => employees.employeeId)
 		.notNull(),
 	customerId: integer("customer_id")
-		.references(() => companiesTable.companyId)
+		.references(() => companies.companyId)
 		.notNull(),
 	orderDate: date("order_date", { mode: "date" }).notNull().defaultNow(),
 	invoiceDate: date("invoice_date", { mode: "date" }),
 	shippedDate: date("shipped_date", { mode: "date" }),
-	shipperId: integer("shipper_id").references(() => companiesTable.companyId),
+	shipperId: integer("shipper_id").references(() => companies.companyId),
 	shippingFee: numeric("shipping_fee", { precision: 10, scale: 2 }).default(
 		"0.00",
 	),
 	taxRate: integer("tax_rate"),
 	taxStatusId: integer("tax_status_id")
-		.references(() => taxStatusTable.taxStatusId)
+		.references(() => taxStatus.taxStatusId)
 		.notNull(),
 	paymentMethod: paymentMethodsEnum("payment_method").notNull(),
 	paidDate: date("paid_date", { mode: "date" }),
 	notes: text("notes"),
 	orderStatusId: integer("order_status_id")
-		.references(() => orderStatusTable.orderStatusId)
+		.references(() => orderStatus.orderStatusId)
 		.notNull(),
 	createdAt: timestamp("created_at", {
 		mode: "date",
@@ -316,7 +296,7 @@ export const ordersTable = pgTable("orders", {
 		.defaultNow(),
 });
 
-export const orderStatusTable = pgTable("order_status", {
+export const orderStatus = pgTable("order_status", {
 	orderStatusId: serial("order_status_id").primaryKey(),
 	orderStatusCode: varchar("order_status_code", { length: 4 }).notNull(),
 	orderStatusName: varchar("order_status_name", { length: 50 }).notNull(),
@@ -332,19 +312,19 @@ export const orderStatusTable = pgTable("order_status", {
 		.defaultNow(),
 });
 
-export const orderDetailsTable = pgTable("order_details", {
+export const orderDetails = pgTable("order_details", {
 	orderDetailId: serial("order_detail_id").primaryKey(),
 	orderId: integer("order_id")
 		.notNull()
-		.references(() => ordersTable.orderId),
+		.references(() => orders.orderId),
 	productId: integer("product_id")
 		.notNull()
-		.references(() => productsTable.productId),
+		.references(() => products.productId),
 	quantity: integer("quantity").default(0),
 	unitPrice: numeric("unit_price", { precision: 10, scale: 4 }),
 	discount: numeric("discount", { precision: 4, scale: 2 }),
 	orderDetailStatusId: integer("order_details_status_id").references(
-		() => orderDetailsStatusTable.orderDetailsStatusId,
+		() => orderDetailsStatus.orderDetailsStatusId,
 	),
 	createdAt: timestamp("created_at", {
 		mode: "date",
@@ -357,7 +337,7 @@ export const orderDetailsTable = pgTable("order_details", {
 		.defaultNow(),
 });
 
-export const orderDetailsStatusTable = pgTable("order_details_status", {
+export const orderDetailsStatus = pgTable("order_details_status", {
 	orderDetailsStatusId: serial("order_details_status_id").primaryKey(),
 	orderDetailsStatusName: varchar("order_details_status_name", { length: 50 }),
 	sortOrder: integer("sort_order").default(0),
@@ -372,20 +352,14 @@ export const orderDetailsStatusTable = pgTable("order_details_status", {
 		.defaultNow(),
 });
 
-export const purchaseOrdersTable = pgTable("purchase_orders", {
+export const purchaseOrders = pgTable("purchase_orders", {
 	purchaseOrderId: serial("purchase_order_id").primaryKey(),
-	vendorId: integer("vendor_id").references(() => companiesTable.companyId),
-	submittedBy: integer("submitted_by").references(
-		() => employeesTable.employeeId,
-	),
+	vendorId: integer("vendor_id").references(() => companies.companyId),
+	submittedBy: integer("submitted_by").references(() => employees.employeeId),
 	submittedDate: date("submitted_date", { mode: "date" }),
-	approvedBy: integer("approved_by").references(
-		() => employeesTable.employeeId,
-	),
+	approvedBy: integer("approved_by").references(() => employees.employeeId),
 	approvedDate: date("approved_date", { mode: "date" }),
-	statusId: integer("status_id").references(
-		() => purchaseOrderStatusTable.statusId,
-	),
+	statusId: integer("status_id").references(() => purchaseOrderStatus.statusId),
 	receivedDate: date("received_date", { mode: "date" }),
 	shippingFee: numeric("shipping_fee", { precision: 10, scale: 4 }),
 	paymentDate: date("payment_date", { mode: "date" }),
@@ -402,12 +376,12 @@ export const purchaseOrdersTable = pgTable("purchase_orders", {
 		.notNull()
 		.defaultNow(),
 });
-export const purchaseOrderDetailsTable = pgTable("purchase_order_details", {
+export const purchaseOrderDetails = pgTable("purchase_order_details", {
 	purchaseOrderDetailId: serial("purchase_order_detail_id").primaryKey(),
 	purchaseOrderId: integer("purchase_order_id").references(
-		() => purchaseOrdersTable.purchaseOrderId,
+		() => purchaseOrders.purchaseOrderId,
 	),
-	productId: integer("product_id").references(() => productsTable.productId),
+	productId: integer("product_id").references(() => products.productId),
 	quantity: integer("quantity").default(0),
 	unitCost: numeric("unit_cost", { precision: 10, scale: 4 }),
 	receivedDate: date("received_date", { mode: "date" }),
@@ -422,7 +396,7 @@ export const purchaseOrderDetailsTable = pgTable("purchase_order_details", {
 		.defaultNow(),
 });
 
-export const purchaseOrderStatusTable = pgTable("purchase_order_status", {
+export const purchaseOrderStatus = pgTable("purchase_order_status", {
 	statusId: serial("status_id").primaryKey(),
 	statusName: varchar("status_name", { length: 50 }),
 	sortOrder: integer("sort_order").default(0),
@@ -437,7 +411,7 @@ export const purchaseOrderStatusTable = pgTable("purchase_order_status", {
 		.defaultNow(),
 });
 
-export const systemSettingTable = pgTable("system_settings", {
+export const systemSetting = pgTable("system_settings", {
 	settingId: serial("setting_id").primaryKey(),
 	settingName: varchar("setting_name", { length: 50 }),
 	settingValue: varchar("setting_value", { length: 255 }),
@@ -453,263 +427,240 @@ export const systemSettingTable = pgTable("system_settings", {
 		.defaultNow(),
 });
 
-export const userTable = pgTable("user", {
+export const users = pgTable("users", {
 	id: text("user_id").primaryKey(),
 	username: text("username").notNull().unique(),
 	hashedPassword: text("hashed_password").notNull().default(""),
 });
 
-export const sessionTable = pgTable("session", {
+export const sessions = pgTable("user_sessions", {
 	id: text("id").primaryKey(),
 	userId: text("user_id")
 		.notNull()
-		.references(() => userTable.id),
+		.references(() => users.id),
 	expiresAt: timestamp("expires_at", {
 		withTimezone: true,
 		mode: "date",
 	}).notNull(),
 });
 
-export const sessionRelations = relations(sessionTable, ({ one }) => ({
-	user: one(userTable, {
-		fields: [sessionTable.userId],
-		references: [userTable.id],
+export const sessionRelations = relations(sessions, ({ one }) => ({
+	user: one(users, {
+		fields: [sessions.userId],
+		references: [users.id],
 	}),
 }));
 
-export const userRelations = relations(userTable, ({ one }) => ({
-	session: one(sessionTable, {
-		fields: [userTable.id],
-		references: [sessionTable.userId],
+export const userRelations = relations(users, ({ one }) => ({
+	session: one(sessions, {
+		fields: [users.id],
+		references: [sessions.userId],
 	}),
 }));
 
 // Relations
-export const companiesRelations = relations(
-	companiesTable,
-	({ one, many }) => ({
-		contacts: many(contactsTable),
-		region: one(regionsTable, {
-			fields: [companiesTable.regionId],
-			references: [regionsTable.regionId],
-		}),
-		productVendors: many(productVendorsTable),
-		companyType: one(companyTypesTable, {
-			fields: [companiesTable.companyTypeId],
-			references: [companyTypesTable.companyTypeId],
-		}),
-		taxStatus: one(taxStatusTable, {
-			fields: [companiesTable.taxStatusId],
-			references: [taxStatusTable.taxStatusId],
-		}),
-		customer: many(ordersTable, { relationName: "customer" }),
-		shipper: many(ordersTable, { relationName: "shipper" }),
+export const companiesRelations = relations(companies, ({ one, many }) => ({
+	contacts: many(contacts),
+	region: one(regions, {
+		fields: [companies.regionId],
+		references: [regions.regionId],
 	}),
-);
-
-export const taxStatusRelations = relations(taxStatusTable, ({ many }) => ({
-	companies: many(companiesTable),
-	orders: many(ordersTable),
+	companyType: one(companyTypes, {
+		fields: [companies.companyTypeId],
+		references: [companyTypes.companyTypeId],
+	}),
+	taxStatus: one(taxStatus, {
+		fields: [companies.taxStatusId],
+		references: [taxStatus.taxStatusId],
+	}),
+	customer: many(orders, { relationName: "customer" }),
+	shipper: many(orders, { relationName: "shipper" }),
+	products: many(products, { relationName: "products" }),
 }));
 
-export const companyTypesRelations = relations(
-	companyTypesTable,
-	({ many }) => ({
-		companies: many(companiesTable),
-	}),
-);
+export const taxStatusRelations = relations(taxStatus, ({ many }) => ({
+	companies: many(companies),
+	orders: many(orders),
+}));
 
-export const contactRelations = relations(contactsTable, ({ one }) => ({
-	company: one(companiesTable, {
-		fields: [contactsTable.companyId],
-		references: [companiesTable.companyId],
+export const companyTypesRelations = relations(companyTypes, ({ many }) => ({
+	companies: many(companies),
+}));
+
+export const contactRelations = relations(contacts, ({ one }) => ({
+	company: one(companies, {
+		fields: [contacts.companyId],
+		references: [companies.companyId],
 	}),
 }));
 
-export const regionRelations = relations(regionsTable, ({ one, many }) => ({
-	company: many(companiesTable),
+export const regionRelations = relations(regions, ({ one, many }) => ({
+	company: many(companies),
 }));
 
-export const productVendorsRelations = relations(
-	productVendorsTable,
-	({ one, many }) => ({
-		companies: one(companiesTable, {
-			fields: [productVendorsTable.vendorId],
-			references: [companiesTable.companyId],
-		}),
-		products: one(productsTable, {
-			fields: [productVendorsTable.productId],
-			references: [productsTable.productId],
-		}),
-	}),
-);
-
-export const categoriesRelations = relations(
-	categoriesTable,
-	({ one, many }) => ({
-		products: many(productsTable),
-	}),
-);
-
-export const productsRelations = relations(productsTable, ({ one, many }) => ({
-	vendor: many(productVendorsTable),
-	category: one(categoriesTable, {
-		fields: [productsTable.categoryId],
-		references: [categoriesTable.categoryId],
-	}),
-	orders: many(orderDetailsTable),
-	purchaseOrders: many(purchaseOrderDetailsTable),
-	stockTake: many(stockTakesTable),
+export const categoriesRelations = relations(categories, ({ one, many }) => ({
+	products: many(products),
 }));
 
-export const orderRelations = relations(ordersTable, ({ one, many }) => ({
-	customer: one(companiesTable, {
-		fields: [ordersTable.customerId],
-		references: [companiesTable.companyId],
+export const productsRelations = relations(products, ({ one, many }) => ({
+	vendor: one(companies, {
+		fields: [products.vendorId],
+		references: [companies.companyId],
+	}),
+	category: one(categories, {
+		fields: [products.categoryId],
+		references: [categories.categoryId],
+	}),
+	orders: many(orderDetails),
+	purchaseOrders: many(purchaseOrderDetails),
+	stockTake: many(stock),
+}));
+
+export const orderRelations = relations(orders, ({ one, many }) => ({
+	customer: one(companies, {
+		fields: [orders.customerId],
+		references: [companies.companyId],
 		relationName: "customer",
 	}),
-	employee: one(employeesTable, {
-		fields: [ordersTable.employeeId],
-		references: [employeesTable.employeeId],
+	employee: one(employees, {
+		fields: [orders.employeeId],
+		references: [employees.employeeId],
 	}),
-	status: one(orderStatusTable, {
-		fields: [ordersTable.orderStatusId],
-		references: [orderStatusTable.orderStatusId],
+	status: one(orderStatus, {
+		fields: [orders.orderStatusId],
+		references: [orderStatus.orderStatusId],
 	}),
-	shipper: one(companiesTable, {
-		fields: [ordersTable.customerId],
-		references: [companiesTable.companyId],
+	shipper: one(companies, {
+		fields: [orders.customerId],
+		references: [companies.companyId],
 		relationName: "shipper",
 	}),
-	taxStatus: one(taxStatusTable, {
-		fields: [ordersTable.taxStatusId],
-		references: [taxStatusTable.taxStatusId],
+	taxStatus: one(taxStatus, {
+		fields: [orders.taxStatusId],
+		references: [taxStatus.taxStatusId],
 	}),
-	orderDetails: many(orderDetailsTable),
+	orderDetails: many(orderDetails),
 }));
 
-export const orderStatusRelations = relations(orderStatusTable, ({ many }) => ({
-	orders: many(ordersTable),
+export const orderStatusRelations = relations(orderStatus, ({ many }) => ({
+	orders: many(orders),
 }));
 
 export const orderDetailsRelations = relations(
-	orderDetailsTable,
+	orderDetails,
 	({ one, many }) => ({
-		order: one(ordersTable, {
-			fields: [orderDetailsTable.orderId],
-			references: [ordersTable.orderId],
+		order: one(orders, {
+			fields: [orderDetails.orderId],
+			references: [orders.orderId],
 		}),
-		status: one(orderDetailsStatusTable, {
-			fields: [orderDetailsTable.orderDetailStatusId],
-			references: [orderDetailsStatusTable.orderDetailsStatusId],
+		status: one(orderDetailsStatus, {
+			fields: [orderDetails.orderDetailStatusId],
+			references: [orderDetailsStatus.orderDetailsStatusId],
 		}),
-		product: one(productsTable, {
-			fields: [orderDetailsTable.productId],
-			references: [productsTable.productId],
+		product: one(products, {
+			fields: [orderDetails.productId],
+			references: [products.productId],
 		}),
 	}),
 );
 
 export const orderDetailsStatusRelations = relations(
-	orderDetailsStatusTable,
+	orderDetailsStatus,
 	({ one, many }) => ({
-		orderDetails: many(orderDetailsTable),
+		orderDetails: many(orderDetails),
 	}),
 );
 
 export const employeePrivilegesRelations = relations(
-	employeePrivilegesTable,
+	employeePrivileges,
 	({ one }) => ({
-		employee: one(employeesTable, {
-			fields: [employeePrivilegesTable.employeeId],
-			references: [employeesTable.employeeId],
+		employee: one(employees, {
+			fields: [employeePrivileges.employeeId],
+			references: [employees.employeeId],
 		}),
-		privilege: one(privilegesTable, {
-			fields: [employeePrivilegesTable.employeePrivilegeId],
-			references: [privilegesTable.privilegeId],
+		privilege: one(privileges, {
+			fields: [employeePrivileges.employeePrivilegeId],
+			references: [privileges.privilegeId],
 		}),
 	}),
 );
 
-export const privilegeRelations = relations(privilegesTable, ({ many }) => ({
-	privileges: many(employeePrivilegesTable),
+export const privilegeRelations = relations(privileges, ({ many }) => ({
+	privileges: many(employeePrivileges),
 }));
 
-export const employeeRelations = relations(employeesTable, ({ one, many }) => ({
-	privileges: many(employeePrivilegesTable),
-	titles: one(titlesTable, {
-		fields: [employeesTable.titleId],
-		references: [titlesTable.titleId],
+export const employeeRelations = relations(employees, ({ one, many }) => ({
+	privileges: many(employeePrivileges),
+	titles: one(titles, {
+		fields: [employees.titleId],
+		references: [titles.titleId],
 	}),
-	supervisor: one(employeesTable, {
-		fields: [employeesTable.supervisorId],
-		references: [employeesTable.employeeId],
+	supervisor: one(employees, {
+		fields: [employees.supervisorId],
+		references: [employees.employeeId],
 	}),
-	orders: many(ordersTable),
-	purchaseOrdersSubmitted: many(purchaseOrdersTable, {
+	orders: many(orders),
+	purchaseOrdersSubmitted: many(purchaseOrders, {
 		relationName: "submitted_by",
 	}),
-	purchaseOrdersApproved: many(purchaseOrdersTable, {
+	purchaseOrdersApproved: many(purchaseOrders, {
 		relationName: "approved_by",
 	}),
 }));
 
-export const titleRelations = relations(titlesTable, ({ one, many }) => ({
-	employees: many(employeesTable),
+export const titleRelations = relations(titles, ({ one, many }) => ({
+	employees: many(employees),
 }));
 
 export const purchaseOrderRelations = relations(
-	purchaseOrdersTable,
+	purchaseOrders,
 	({ one, many }) => ({
-		vendor: one(companiesTable, {
-			fields: [purchaseOrdersTable.vendorId],
-			references: [companiesTable.companyId],
+		vendor: one(companies, {
+			fields: [purchaseOrders.vendorId],
+			references: [companies.companyId],
 		}),
-		purchaseOrderStatus: one(purchaseOrderStatusTable, {
-			fields: [purchaseOrdersTable.statusId],
-			references: [purchaseOrderStatusTable.statusId],
+		purchaseOrderStatus: one(purchaseOrderStatus, {
+			fields: [purchaseOrders.statusId],
+			references: [purchaseOrderStatus.statusId],
 		}),
-		submittedBy: one(employeesTable, {
-			fields: [purchaseOrdersTable.submittedBy],
-			references: [employeesTable.employeeId],
+		submittedBy: one(employees, {
+			fields: [purchaseOrders.submittedBy],
+			references: [employees.employeeId],
 			relationName: "submitted_by",
 		}),
-		approvedBy: one(employeesTable, {
-			fields: [purchaseOrdersTable.approvedBy],
-			references: [employeesTable.employeeId],
+		approvedBy: one(employees, {
+			fields: [purchaseOrders.approvedBy],
+			references: [employees.employeeId],
 			relationName: "approved_by",
 		}),
-		orderDetails: many(purchaseOrderDetailsTable),
+		orderDetails: many(purchaseOrderDetails),
 	}),
 );
 
 export const purchaseOrderStatusRelations = relations(
-	purchaseOrderStatusTable,
+	purchaseOrderStatus,
 	({ one, many }) => ({
-		purchaseOrders: many(purchaseOrdersTable),
+		purchaseOrders: many(purchaseOrders),
 	}),
 );
 
 export const purchaseOrderDetailsRelations = relations(
-	purchaseOrderDetailsTable,
+	purchaseOrderDetails,
 	({ one, many }) => ({
-		purchaseOrderId: one(purchaseOrdersTable, {
-			fields: [purchaseOrderDetailsTable.purchaseOrderId],
-			references: [purchaseOrdersTable.purchaseOrderId],
+		purchaseOrderId: one(purchaseOrders, {
+			fields: [purchaseOrderDetails.purchaseOrderId],
+			references: [purchaseOrders.purchaseOrderId],
 		}),
-		product: one(productsTable, {
-			fields: [purchaseOrderDetailsTable.productId],
-			references: [productsTable.productId],
+		product: one(products, {
+			fields: [purchaseOrderDetails.productId],
+			references: [products.productId],
 		}),
 	}),
 );
 
-export const stockTakeRelations = relations(
-	stockTakesTable,
-	({ one, many }) => ({
-		products: one(productsTable, {
-			fields: [stockTakesTable.productId],
-			references: [productsTable.productId],
-		}),
+export const stockTakeRelations = relations(stock, ({ one, many }) => ({
+	products: one(products, {
+		fields: [stock.productId],
+		references: [products.productId],
 	}),
-);
+}));

@@ -1,10 +1,8 @@
 {
-  "id": "d70988ba-ea1d-4b2f-b2b0-8e87e7fea751",
-  "prevId": "8664fa19-4ef4-40f9-9c86-2cc69eab55c6",
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "tables": {
-    "categories": {
+    "public.categories": {
       "name": "categories",
       "schema": "",
       "columns": {
@@ -57,7 +55,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "companies": {
+    "public.companies": {
       "name": "companies",
       "schema": "",
       "columns": {
@@ -160,47 +158,47 @@
         "companies_company_type_id_company_types_company_type_id_fk": {
           "name": "companies_company_type_id_company_types_company_type_id_fk",
           "tableFrom": "companies",
-          "tableTo": "company_types",
           "columnsFrom": [
             "company_type_id"
           ],
+          "tableTo": "company_types",
           "columnsTo": [
             "company_type_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "companies_region_id_regions_region_id_fk": {
           "name": "companies_region_id_regions_region_id_fk",
           "tableFrom": "companies",
-          "tableTo": "regions",
           "columnsFrom": [
             "region_id"
           ],
+          "tableTo": "regions",
           "columnsTo": [
             "region_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "companies_tax_status_id_tax_status_tax_status_id_fk": {
           "name": "companies_tax_status_id_tax_status_tax_status_id_fk",
           "tableFrom": "companies",
-          "tableTo": "tax_status",
           "columnsFrom": [
             "tax_status_id"
           ],
+          "tableTo": "tax_status",
           "columnsTo": [
             "tax_status_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "company_types": {
+    "public.company_types": {
       "name": "company_types",
       "schema": "",
       "columns": {
@@ -235,7 +233,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "contacts": {
+    "public.contacts": {
       "name": "contacts",
       "schema": "",
       "columns": {
@@ -321,21 +319,21 @@
         "contacts_company_id_companies_company_id_fk": {
           "name": "contacts_company_id_companies_company_id_fk",
           "tableFrom": "contacts",
-          "tableTo": "companies",
           "columnsFrom": [
             "company_id"
           ],
+          "tableTo": "companies",
           "columnsTo": [
             "company_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "employee_privileges": {
+    "public.employee_privileges": {
       "name": "employee_privileges",
       "schema": "",
       "columns": {
@@ -376,34 +374,34 @@
         "employee_privileges_employee_id_employees_employee_id_fk": {
           "name": "employee_privileges_employee_id_employees_employee_id_fk",
           "tableFrom": "employee_privileges",
-          "tableTo": "employees",
           "columnsFrom": [
             "employee_id"
           ],
+          "tableTo": "employees",
           "columnsTo": [
             "employee_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "employee_privileges_privilege_id_privileges_privilege_id_fk": {
           "name": "employee_privileges_privilege_id_privileges_privilege_id_fk",
           "tableFrom": "employee_privileges",
-          "tableTo": "privileges",
           "columnsFrom": [
             "privilege_id"
           ],
+          "tableTo": "privileges",
           "columnsTo": [
             "privilege_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "employees": {
+    "public.employees": {
       "name": "employees",
       "schema": "",
       "columns": {
@@ -501,34 +499,34 @@
         "employees_title_id_titles_title_id_fk": {
           "name": "employees_title_id_titles_title_id_fk",
           "tableFrom": "employees",
-          "tableTo": "titles",
           "columnsFrom": [
             "title_id"
           ],
+          "tableTo": "titles",
           "columnsTo": [
             "title_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "employees_supervisor_id_employees_employee_id_fk": {
           "name": "employees_supervisor_id_employees_employee_id_fk",
           "tableFrom": "employees",
-          "tableTo": "employees",
           "columnsFrom": [
             "supervisor_id"
           ],
+          "tableTo": "employees",
           "columnsTo": [
             "employee_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "order_details": {
+    "public.order_details": {
       "name": "order_details",
       "schema": "",
       "columns": {
@@ -595,47 +593,47 @@
         "order_details_order_id_orders_order_id_fk": {
           "name": "order_details_order_id_orders_order_id_fk",
           "tableFrom": "order_details",
-          "tableTo": "orders",
           "columnsFrom": [
             "order_id"
           ],
+          "tableTo": "orders",
           "columnsTo": [
             "order_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "order_details_product_id_products_product_id_fk": {
           "name": "order_details_product_id_products_product_id_fk",
           "tableFrom": "order_details",
-          "tableTo": "products",
           "columnsFrom": [
             "product_id"
           ],
+          "tableTo": "products",
           "columnsTo": [
             "product_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "order_details_order_details_status_id_order_details_status_order_details_status_id_fk": {
           "name": "order_details_order_details_status_id_order_details_status_order_details_status_id_fk",
           "tableFrom": "order_details",
-          "tableTo": "order_details_status",
           "columnsFrom": [
             "order_details_status_id"
           ],
+          "tableTo": "order_details_status",
           "columnsTo": [
             "order_details_status_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "order_details_status": {
+    "public.order_details_status": {
       "name": "order_details_status",
       "schema": "",
       "columns": {
@@ -677,7 +675,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "order_status": {
+    "public.order_status": {
       "name": "order_status",
       "schema": "",
       "columns": {
@@ -725,7 +723,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "orders": {
+    "public.orders": {
       "name": "orders",
       "schema": "",
       "columns": {
@@ -833,73 +831,73 @@
         "orders_employee_id_employees_employee_id_fk": {
           "name": "orders_employee_id_employees_employee_id_fk",
           "tableFrom": "orders",
-          "tableTo": "employees",
           "columnsFrom": [
             "employee_id"
           ],
+          "tableTo": "employees",
           "columnsTo": [
             "employee_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "orders_customer_id_companies_company_id_fk": {
           "name": "orders_customer_id_companies_company_id_fk",
           "tableFrom": "orders",
-          "tableTo": "companies",
           "columnsFrom": [
             "customer_id"
           ],
+          "tableTo": "companies",
           "columnsTo": [
             "company_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "orders_shipper_id_companies_company_id_fk": {
           "name": "orders_shipper_id_companies_company_id_fk",
           "tableFrom": "orders",
-          "tableTo": "companies",
           "columnsFrom": [
             "shipper_id"
           ],
+          "tableTo": "companies",
           "columnsTo": [
             "company_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "orders_tax_status_id_tax_status_tax_status_id_fk": {
           "name": "orders_tax_status_id_tax_status_tax_status_id_fk",
           "tableFrom": "orders",
-          "tableTo": "tax_status",
           "columnsFrom": [
             "tax_status_id"
           ],
+          "tableTo": "tax_status",
           "columnsTo": [
             "tax_status_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "orders_order_status_id_order_status_order_status_id_fk": {
           "name": "orders_order_status_id_order_status_order_status_id_fk",
           "tableFrom": "orders",
-          "tableTo": "order_status",
           "columnsFrom": [
             "order_status_id"
           ],
+          "tableTo": "order_status",
           "columnsTo": [
             "order_status_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "privileges": {
+    "public.privileges": {
       "name": "privileges",
       "schema": "",
       "columns": {
@@ -934,7 +932,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "product_vendors": {
+    "public.product_vendors": {
       "name": "product_vendors",
       "schema": "",
       "columns": {
@@ -975,34 +973,34 @@
         "product_vendors_product_id_products_product_id_fk": {
           "name": "product_vendors_product_id_products_product_id_fk",
           "tableFrom": "product_vendors",
-          "tableTo": "products",
           "columnsFrom": [
             "product_id"
           ],
+          "tableTo": "products",
           "columnsTo": [
             "product_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "product_vendors_vendor_id_companies_company_id_fk": {
           "name": "product_vendors_vendor_id_companies_company_id_fk",
           "tableFrom": "product_vendors",
-          "tableTo": "companies",
           "columnsFrom": [
             "vendor_id"
           ],
+          "tableTo": "companies",
           "columnsTo": [
             "company_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "products": {
+    "public.products": {
       "name": "products",
       "schema": "",
       "columns": {
@@ -1101,29 +1099,29 @@
         "products_category_id_categories_category_id_fk": {
           "name": "products_category_id_categories_category_id_fk",
           "tableFrom": "products",
-          "tableTo": "categories",
           "columnsFrom": [
             "category_id"
           ],
+          "tableTo": "categories",
           "columnsTo": [
             "category_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "products_product_code_unique": {
           "name": "products_product_code_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "product_code"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
-    "purchase_order_details": {
+    "public.purchase_order_details": {
       "name": "purchase_order_details",
       "schema": "",
       "columns": {
@@ -1183,34 +1181,34 @@
         "purchase_order_details_purchase_order_id_purchase_orders_purchase_order_id_fk": {
           "name": "purchase_order_details_purchase_order_id_purchase_orders_purchase_order_id_fk",
           "tableFrom": "purchase_order_details",
-          "tableTo": "purchase_orders",
           "columnsFrom": [
             "purchase_order_id"
           ],
+          "tableTo": "purchase_orders",
           "columnsTo": [
             "purchase_order_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "purchase_order_details_product_id_products_product_id_fk": {
           "name": "purchase_order_details_product_id_products_product_id_fk",
           "tableFrom": "purchase_order_details",
-          "tableTo": "products",
           "columnsFrom": [
             "product_id"
           ],
+          "tableTo": "products",
           "columnsTo": [
             "product_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "purchase_order_status": {
+    "public.purchase_order_status": {
       "name": "purchase_order_status",
       "schema": "",
       "columns": {
@@ -1252,7 +1250,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "purchase_orders": {
+    "public.purchase_orders": {
       "name": "purchase_orders",
       "schema": "",
       "columns": {
@@ -1353,60 +1351,60 @@
         "purchase_orders_vendor_id_companies_company_id_fk": {
           "name": "purchase_orders_vendor_id_companies_company_id_fk",
           "tableFrom": "purchase_orders",
-          "tableTo": "companies",
           "columnsFrom": [
             "vendor_id"
           ],
+          "tableTo": "companies",
           "columnsTo": [
             "company_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "purchase_orders_submitted_by_employees_employee_id_fk": {
           "name": "purchase_orders_submitted_by_employees_employee_id_fk",
           "tableFrom": "purchase_orders",
-          "tableTo": "employees",
           "columnsFrom": [
             "submitted_by"
           ],
+          "tableTo": "employees",
           "columnsTo": [
             "employee_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "purchase_orders_approved_by_employees_employee_id_fk": {
           "name": "purchase_orders_approved_by_employees_employee_id_fk",
           "tableFrom": "purchase_orders",
-          "tableTo": "employees",
           "columnsFrom": [
             "approved_by"
           ],
+          "tableTo": "employees",
           "columnsTo": [
             "employee_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "purchase_orders_status_id_purchase_order_status_status_id_fk": {
           "name": "purchase_orders_status_id_purchase_order_status_status_id_fk",
           "tableFrom": "purchase_orders",
-          "tableTo": "purchase_order_status",
           "columnsFrom": [
             "status_id"
           ],
+          "tableTo": "purchase_order_status",
           "columnsTo": [
             "status_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "regions": {
+    "public.regions": {
       "name": "regions",
       "schema": "",
       "columns": {
@@ -1434,7 +1432,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "stock_take": {
+    "public.stock_take": {
       "name": "stock_take",
       "schema": "",
       "columns": {
@@ -1482,21 +1480,21 @@
         "stock_take_product_id_products_product_id_fk": {
           "name": "stock_take_product_id_products_product_id_fk",
           "tableFrom": "stock_take",
-          "tableTo": "products",
           "columnsFrom": [
             "product_id"
           ],
+          "tableTo": "products",
           "columnsTo": [
             "product_id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "system_settings": {
+    "public.system_settings": {
       "name": "system_settings",
       "schema": "",
       "columns": {
@@ -1543,7 +1541,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "tax_status": {
+    "public.tax_status": {
       "name": "tax_status",
       "schema": "",
       "columns": {
@@ -1578,7 +1576,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "titles": {
+    "public.titles": {
       "name": "titles",
       "schema": "",
       "columns": {
@@ -1602,20 +1600,23 @@
     }
   },
   "enums": {
-    "payment_method": {
+    "public.payment_method": {
       "name": "payment_method",
-      "values": {
-        "Credit Card": "Credit Card",
-        "Check": "Check",
-        "Cash": "Cash",
-        "Bank Transfer": "Bank Transfer"
-      }
+      "schema": "public",
+      "values": [
+        "Credit Card",
+        "Check",
+        "Cash",
+        "Bank Transfer"
+      ]
     }
   },
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "d70988ba-ea1d-4b2f-b2b0-8e87e7fea751",
+  "prevId": "8664fa19-4ef4-40f9-9c86-2cc69eab55c6"
 }

@@ -5,9 +5,9 @@ const connectionString = process.env.CONNECTION_STRING;
 if (!connectionString) throw new Error("Database url must be defined.");
 
 export default defineConfig({
-	driver: "pg",
+	dialect: "postgresql",
 	dbCredentials: {
-		connectionString: connectionString,
+		url: connectionString,
 	},
 	schema: "./db/schema.ts",
 	out: "./db/drizzle",
@@ -15,5 +15,9 @@ export default defineConfig({
 	strict: true,
 	introspect: {
 		casing: "camel",
+	},
+	migrations: {
+		schema: "public",
+		table: "migrations",
 	},
 });

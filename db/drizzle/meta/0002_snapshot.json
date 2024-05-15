@@ -1,4 +1,6 @@
 {
+  "id": "99135ceb-9ec6-4ce8-924e-b6692585720f",
+  "prevId": "d70988ba-ea1d-4b2f-b2b0-8e87e7fea751",
   "version": "6",
   "dialect": "postgresql",
   "tables": {
@@ -40,13 +42,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -68,7 +72,7 @@
           "name": "company_name",
           "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "company_type_id": {
           "name": "company_type_id",
@@ -134,13 +138,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {
@@ -156,41 +162,41 @@
         "companies_company_type_id_company_types_company_type_id_fk": {
           "name": "companies_company_type_id_company_types_company_type_id_fk",
           "tableFrom": "companies",
+          "tableTo": "company_types",
           "columnsFrom": [
             "company_type_id"
           ],
-          "tableTo": "company_types",
           "columnsTo": [
             "company_type_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "companies_region_id_regions_region_id_fk": {
           "name": "companies_region_id_regions_region_id_fk",
           "tableFrom": "companies",
+          "tableTo": "regions",
           "columnsFrom": [
             "region_id"
           ],
-          "tableTo": "regions",
           "columnsTo": [
             "region_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "companies_tax_status_id_tax_status_tax_status_id_fk": {
           "name": "companies_tax_status_id_tax_status_tax_status_id_fk",
           "tableFrom": "companies",
+          "tableTo": "tax_status",
           "columnsFrom": [
             "tax_status_id"
           ],
-          "tableTo": "tax_status",
           "columnsTo": [
             "tax_status_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -216,13 +222,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -292,13 +300,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {
@@ -315,15 +325,15 @@
         "contacts_company_id_companies_company_id_fk": {
           "name": "contacts_company_id_companies_company_id_fk",
           "tableFrom": "contacts",
+          "tableTo": "companies",
           "columnsFrom": [
             "company_id"
           ],
-          "tableTo": "companies",
           "columnsTo": [
             "company_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -355,13 +365,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -369,28 +381,28 @@
         "employee_privileges_employee_id_employees_employee_id_fk": {
           "name": "employee_privileges_employee_id_employees_employee_id_fk",
           "tableFrom": "employee_privileges",
+          "tableTo": "employees",
           "columnsFrom": [
             "employee_id"
           ],
-          "tableTo": "employees",
           "columnsTo": [
             "employee_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "employee_privileges_privilege_id_privileges_privilege_id_fk": {
           "name": "employee_privileges_privilege_id_privileges_privilege_id_fk",
           "tableFrom": "employee_privileges",
+          "tableTo": "privileges",
           "columnsFrom": [
             "privilege_id"
           ],
-          "tableTo": "privileges",
           "columnsTo": [
             "privilege_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -410,13 +422,15 @@
           "name": "last_name",
           "type": "varchar(30)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "' '"
         },
         "first_name": {
           "name": "first_name",
           "type": "varchar(30)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "' '"
         },
         "email": {
           "name": "email",
@@ -470,13 +484,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {
@@ -493,30 +509,73 @@
         "employees_title_id_titles_title_id_fk": {
           "name": "employees_title_id_titles_title_id_fk",
           "tableFrom": "employees",
+          "tableTo": "titles",
           "columnsFrom": [
             "title_id"
           ],
-          "tableTo": "titles",
           "columnsTo": [
             "title_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "employees_supervisor_id_employees_employee_id_fk": {
           "name": "employees_supervisor_id_employees_employee_id_fk",
           "tableFrom": "employees",
+          "tableTo": "employees",
           "columnsFrom": [
             "supervisor_id"
           ],
-          "tableTo": "employees",
           "columnsTo": [
             "employee_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.order_details_status": {
+      "name": "order_details_status",
+      "schema": "",
+      "columns": {
+        "order_details_status_id": {
+          "name": "order_details_status_id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "order_details_status_name": {
+          "name": "order_details_status_name",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sort_order": {
+          "name": "sort_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "modified_at": {
+          "name": "modified_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -557,10 +616,9 @@
         },
         "discount": {
           "name": "discount",
-          "type": "numeric(1, 2)",
+          "type": "numeric(4, 2)",
           "primaryKey": false,
-          "notNull": false,
-          "default": "0.00::numeric"
+          "notNull": false
         },
         "order_details_status_id": {
           "name": "order_details_status_id",
@@ -572,13 +630,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -586,84 +646,43 @@
         "order_details_order_id_orders_order_id_fk": {
           "name": "order_details_order_id_orders_order_id_fk",
           "tableFrom": "order_details",
+          "tableTo": "orders",
           "columnsFrom": [
             "order_id"
           ],
-          "tableTo": "orders",
           "columnsTo": [
             "order_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "order_details_product_id_products_product_id_fk": {
           "name": "order_details_product_id_products_product_id_fk",
           "tableFrom": "order_details",
+          "tableTo": "products",
           "columnsFrom": [
             "product_id"
           ],
-          "tableTo": "products",
           "columnsTo": [
             "product_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "order_details_order_details_status_id_order_details_status_order_details_status_id_fk": {
           "name": "order_details_order_details_status_id_order_details_status_order_details_status_id_fk",
           "tableFrom": "order_details",
+          "tableTo": "order_details_status",
           "columnsFrom": [
             "order_details_status_id"
           ],
-          "tableTo": "order_details_status",
           "columnsTo": [
             "order_details_status_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.order_details_status": {
-      "name": "order_details_status",
-      "schema": "",
-      "columns": {
-        "order_details_status_id": {
-          "name": "order_details_status_id",
-          "type": "serial",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "order_details_status_name": {
-          "name": "order_details_status_name",
-          "type": "varchar(50)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "sort_order": {
-          "name": "sort_order",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "default": 0
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "modified_at": {
-          "name": "modified_at",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -681,13 +700,13 @@
           "name": "order_status_code",
           "type": "varchar(4)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "order_status_name": {
           "name": "order_status_name",
           "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "sord_order": {
           "name": "sord_order",
@@ -700,13 +719,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -728,19 +749,19 @@
           "name": "employee_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "customer_id": {
           "name": "customer_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "order_date": {
           "name": "order_date",
           "type": "date",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "invoice_date": {
@@ -763,9 +784,10 @@
         },
         "shipping_fee": {
           "name": "shipping_fee",
-          "type": "numeric(10, 4)",
+          "type": "numeric(10, 2)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "'0.00'"
         },
         "tax_rate": {
           "name": "tax_rate",
@@ -777,13 +799,14 @@
           "name": "tax_status_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "payment_method": {
           "name": "payment_method",
           "type": "payment_method",
+          "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "paid_date": {
           "name": "paid_date",
@@ -801,19 +824,21 @@
           "name": "order_status_id",
           "type": "integer",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -821,67 +846,67 @@
         "orders_employee_id_employees_employee_id_fk": {
           "name": "orders_employee_id_employees_employee_id_fk",
           "tableFrom": "orders",
+          "tableTo": "employees",
           "columnsFrom": [
             "employee_id"
           ],
-          "tableTo": "employees",
           "columnsTo": [
             "employee_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "orders_customer_id_companies_company_id_fk": {
           "name": "orders_customer_id_companies_company_id_fk",
           "tableFrom": "orders",
+          "tableTo": "companies",
           "columnsFrom": [
             "customer_id"
           ],
-          "tableTo": "companies",
           "columnsTo": [
             "company_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "orders_shipper_id_companies_company_id_fk": {
           "name": "orders_shipper_id_companies_company_id_fk",
           "tableFrom": "orders",
+          "tableTo": "companies",
           "columnsFrom": [
             "shipper_id"
           ],
-          "tableTo": "companies",
           "columnsTo": [
             "company_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "orders_tax_status_id_tax_status_tax_status_id_fk": {
           "name": "orders_tax_status_id_tax_status_tax_status_id_fk",
           "tableFrom": "orders",
+          "tableTo": "tax_status",
           "columnsFrom": [
             "tax_status_id"
           ],
-          "tableTo": "tax_status",
           "columnsTo": [
             "tax_status_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "orders_order_status_id_order_status_order_status_id_fk": {
           "name": "orders_order_status_id_order_status_order_status_id_fk",
           "tableFrom": "orders",
+          "tableTo": "order_status",
           "columnsFrom": [
             "order_status_id"
           ],
-          "tableTo": "order_status",
           "columnsTo": [
             "order_status_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -907,13 +932,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -947,13 +974,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -961,28 +990,28 @@
         "product_vendors_product_id_products_product_id_fk": {
           "name": "product_vendors_product_id_products_product_id_fk",
           "tableFrom": "product_vendors",
+          "tableTo": "products",
           "columnsFrom": [
             "product_id"
           ],
-          "tableTo": "products",
           "columnsTo": [
             "product_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "product_vendors_vendor_id_companies_company_id_fk": {
           "name": "product_vendors_vendor_id_companies_company_id_fk",
           "tableFrom": "product_vendors",
+          "tableTo": "companies",
           "columnsFrom": [
             "vendor_id"
           ],
-          "tableTo": "companies",
           "columnsTo": [
             "company_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -1016,8 +1045,15 @@
           "primaryKey": false,
           "notNull": false
         },
-        "standard_unit_cost": {
-          "name": "standard_unit_cost",
+        "unit_cost": {
+          "name": "unit_cost",
+          "type": "numeric(10, 4)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "0::numeric"
+        },
+        "unit_price": {
+          "name": "unit_price",
           "type": "numeric(10, 4)",
           "primaryKey": false,
           "notNull": false,
@@ -1029,8 +1065,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "targer_level": {
-          "name": "targer_level",
+        "target_level": {
+          "name": "target_level",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -1064,7 +1100,8 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
@@ -1086,25 +1123,25 @@
         "products_category_id_categories_category_id_fk": {
           "name": "products_category_id_categories_category_id_fk",
           "tableFrom": "products",
+          "tableTo": "categories",
           "columnsFrom": [
             "category_id"
           ],
-          "tableTo": "categories",
           "columnsTo": [
             "category_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "products_product_code_unique": {
           "name": "products_product_code_unique",
+          "nullsNotDistinct": false,
           "columns": [
             "product_code"
-          ],
-          "nullsNotDistinct": false
+          ]
         }
       }
     },
@@ -1153,13 +1190,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -1167,28 +1206,28 @@
         "purchase_order_details_purchase_order_id_purchase_orders_purchase_order_id_fk": {
           "name": "purchase_order_details_purchase_order_id_purchase_orders_purchase_order_id_fk",
           "tableFrom": "purchase_order_details",
+          "tableTo": "purchase_orders",
           "columnsFrom": [
             "purchase_order_id"
           ],
-          "tableTo": "purchase_orders",
           "columnsTo": [
             "purchase_order_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "purchase_order_details_product_id_products_product_id_fk": {
           "name": "purchase_order_details_product_id_products_product_id_fk",
           "tableFrom": "purchase_order_details",
+          "tableTo": "products",
           "columnsFrom": [
             "product_id"
           ],
-          "tableTo": "products",
           "columnsTo": [
             "product_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -1221,13 +1260,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -1308,6 +1349,7 @@
         "payment_method": {
           "name": "payment_method",
           "type": "payment_method",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": false
         },
@@ -1321,13 +1363,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -1335,54 +1379,54 @@
         "purchase_orders_vendor_id_companies_company_id_fk": {
           "name": "purchase_orders_vendor_id_companies_company_id_fk",
           "tableFrom": "purchase_orders",
+          "tableTo": "companies",
           "columnsFrom": [
             "vendor_id"
           ],
-          "tableTo": "companies",
           "columnsTo": [
             "company_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "purchase_orders_submitted_by_employees_employee_id_fk": {
           "name": "purchase_orders_submitted_by_employees_employee_id_fk",
           "tableFrom": "purchase_orders",
+          "tableTo": "employees",
           "columnsFrom": [
             "submitted_by"
           ],
-          "tableTo": "employees",
           "columnsTo": [
             "employee_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "purchase_orders_approved_by_employees_employee_id_fk": {
           "name": "purchase_orders_approved_by_employees_employee_id_fk",
           "tableFrom": "purchase_orders",
+          "tableTo": "employees",
           "columnsFrom": [
             "approved_by"
           ],
-          "tableTo": "employees",
           "columnsTo": [
             "employee_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         },
         "purchase_orders_status_id_purchase_order_status_status_id_fk": {
           "name": "purchase_orders_status_id_purchase_order_status_status_id_fk",
           "tableFrom": "purchase_orders",
+          "tableTo": "purchase_order_status",
           "columnsFrom": [
             "status_id"
           ],
-          "tableTo": "purchase_order_status",
           "columnsTo": [
             "status_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -1416,6 +1460,48 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.session": {
+      "name": "session",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "session_user_id_user_user_id_fk": {
+          "name": "session_user_id_user_user_id_fk",
+          "tableFrom": "session",
+          "tableTo": "user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.stock_take": {
       "name": "stock_take",
       "schema": "",
@@ -1430,7 +1516,7 @@
           "name": "stock_take_date",
           "type": "date",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "default": "now()"
         },
         "product_id": {
@@ -1455,7 +1541,8 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -1463,15 +1550,15 @@
         "stock_take_product_id_products_product_id_fk": {
           "name": "stock_take_product_id_products_product_id_fk",
           "tableFrom": "stock_take",
+          "tableTo": "products",
           "columnsFrom": [
             "product_id"
           ],
-          "tableTo": "products",
           "columnsTo": [
             "product_id"
           ],
-          "onUpdate": "no action",
-          "onDelete": "no action"
+          "onDelete": "no action",
+          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
@@ -1509,13 +1596,15 @@
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         }
       },
       "indexes": {},
@@ -1537,13 +1626,14 @@
           "name": "tax_status",
           "type": "varchar(50)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "created_at": {
           "name": "created_at",
           "type": "timestamp with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true,
+          "default": "now()"
         },
         "modified_at": {
           "name": "modified_at",
@@ -1578,6 +1668,43 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
+    },
+    "public.user": {
+      "name": "user",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "hashed_password": {
+          "name": "hashed_password",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "user_username_unique": {
+          "name": "user_username_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "username"
+          ]
+        }
+      }
     }
   },
   "enums": {
@@ -1594,10 +1721,8 @@
   },
   "schemas": {},
   "_meta": {
+    "columns": {},
     "schemas": {},
-    "tables": {},
-    "columns": {}
-  },
-  "id": "8664fa19-4ef4-40f9-9c86-2cc69eab55c6",
-  "prevId": "00000000-0000-0000-0000-000000000000"
+    "tables": {}
+  }
 }
