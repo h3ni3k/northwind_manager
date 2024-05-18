@@ -1,63 +1,159 @@
 "use server";
 
 import { db } from "@/db/client";
-import {
-	companiesTable,
-	employeesTable,
-	orderStatusTable,
-	ordersTable,
-	taxStatusTable,
-} from "@/db/schema";
-import { eq, sql } from "drizzle-orm";
-import { alias } from "drizzle-orm/pg-core";
+import { employees, orderDetails, orders } from "@/db/schema";
+import { eq } from "drizzle-orm";
 
-export async function getOrders() {
-	const customer = alias(companiesTable, "customer");
-	const shipper = alias(companiesTable, "shipper");
+export type Order = {
+	orderId: number;
+	orderDate: Date;
+	invoiceDate: Date | null;
+	shippedDate: Date | null;
+	shippingFee: string | null;
+	paidDate: Date | null;
+	paymentMethod: string;
+	notes: string | null;
+	employee: {
+		employeeId: number;
+		firstName: string;
+		lastName: string;
+	};
+	customer: {
+		companyName: string;
+	};
+	shipper: {
+		companyName: string;
+	};
+	// taxStatus: {
+	// 	taxStatus: string;
+	// };
+	status: {
+		orderStatusCode: string;
+		orderStatusName: string;
+	};
+};
 
-	return await db
-		.select({
-			order: {
-				orderId: ordersTable.orderId,
-				orderDate: ordersTable.orderDate,
-				invoiceDate: ordersTable.invoiceDate,
-				shippedDate: ordersTable.shippedDate,
-				shippingFee: ordersTable.shippingFee,
-				taxRate: ordersTable.taxRate,
-				paymentMethod: ordersTable.paymentMethod,
-				paidDate: ordersTable.paidDate,
-				notes: ordersTable.notes,
-			},
+export async function getOrders(): Promise<Order[]> {
+	return await db.query.orders.findMany({
+		columns: {
+			orderId: true,
+			orderDate: true,
+			invoiceDate: true,
+			shippedDate: true,
+			shippingFee: true,
+			paidDate: true,
+			paymentMethod: true,
+			notes: true,
+		},
+		with: {
 			employee: {
-				firstName: employeesTable.firstName,
-				lastName: employeesTable.lastName,
+				columns: {
+					employeeId: true,
+					firstName: true,
+					lastName: true,
+				},
 			},
 			customer: {
-				companyName: customer.companyName,
+				columns: {
+					companyName: true,
+				},
 			},
 			shipper: {
-				shipperName: shipper.companyName,
+				columns: {
+					companyName: true,
+				},
 			},
-			taxStatus: {
-				taxStatus: taxStatusTable.taxStatus,
+			// taxStatus: {
+			// 	columns: {
+			// 		taxStatus: true,
+			// 	},
+			// },
+			status: {
+				columns: {
+					orderStatusCode: true,
+					orderStatusName: true,
+				},
 			},
-			orderStatus: {
-				orderStatus: orderStatusTable.orderStatusCode,
+		},
+	});
+}
+
+export async function getOrder(orderId: number) {
+	return await db.query.orders.findFirst({
+		columns: {
+			orderId: true,
+			orderDate: true,
+			invoiceDate: true,
+			shippedDate: true,
+			shippingFee: true,
+			paidDate: true,
+			paymentMethod: true,
+			notes: true,
+		},
+		with: {
+			employee: {
+				columns: {
+					employeeId: true,
+					firstName: true,
+					lastName: true,
+				},
 			},
-		})
-		.from(ordersTable)
-		.leftJoin(
-			employeesTable,
-			eq(employeesTable.employeeId, ordersTable.employeeId),
-		)
-		.leftJoin(customer, eq(customer.companyId, ordersTable.customerId))
-		.leftJoin(shipper, eq(shipper.companyId, ordersTable.shipperId))
-		.leftJoin(
-			taxStatusTable,
-			eq(taxStatusTable.taxStatusId, ordersTable.taxStatusId),
-		)
-		.leftJoin(
-			orderStatusTable,
-			eq(orderStatusTable.orderStatusId, ordersTable.orderStatusId),
-		);
+			customer: {
+				columns: {
+					companyName: true,
+				},
+			},
+			shipper: {
+				columns: {
+					companyName: true,
+				},
+			},
+			// taxStatus: {
+			// 	columns: {
+			// 		taxStatus: true,
+			// 	},
+			// },
+			status: {
+				columns: {
+					orderStatusCode: true,
+					orderStatusName: true,
+				},
+			},
+		},
+		where: eq(orders.orderId, orderId),
+	});
+}
+
+export type OrderDetails = {
+	orderDetailId: number;
+	orderId: number;
+	productId: number;
+	quantity: number | null;
+	unitPrice: string | null;
+	discount: string | null;
+	product: {
+		productCode: string | null;
+		productName: string | null;
+	};
+};
+
+export async function getOrderDetails(
+	orderId: number,
+): Promise<OrderDetails[]> {
+	return await db.query.orderDetails.findMany({
+		columns: {
+			orderDetailStatusId: false,
+			createdAt: false,
+			modifiedAt: false,
+		},
+		with: {
+			product: {
+				columns: {
+					productCode: true,
+					productName: true,
+				},
+			},
+		},
+		where: eq(orderDetails.orderId, orderId),
+	});
 }

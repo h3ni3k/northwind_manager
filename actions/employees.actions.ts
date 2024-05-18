@@ -1,5 +1,8 @@
 "use server";
 
 import { db } from "@/db/client";
-import { employeesTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { employees } from "@/db/schema";
+
+export async function getAllEmployees() {
+	return await db.select().from(employees);
+}

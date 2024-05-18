@@ -10,10 +10,18 @@ export async function wait(time: number) {
 }
 
 export function formatDate(date: Date | null) {
+	const locale = getLocale();
+
+	const dateOptions: Intl.DateTimeFormatOptions = {
+		month: "2-digit",
+		day: "2-digit",
+		year: "numeric",
+	};
 	if (!date) {
 		return "";
 	}
-	return date.toLocaleDateString();
+
+	return Intl.DateTimeFormat(locale, dateOptions).format(date);
 }
 
 export function formatCurrency(amount: number) {
@@ -25,4 +33,10 @@ export function formatCurrency(amount: number) {
 		return formatter.format(0);
 	}
 	return formatter.format(amount);
+}
+
+function getLocale() {
+	return navigator.languages?.length
+		? navigator.languages[0]
+		: navigator.language;
 }
