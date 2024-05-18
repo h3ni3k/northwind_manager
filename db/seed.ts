@@ -38,27 +38,30 @@ async function recreateDatabase() {
 
 async function clearData() {
 	//TODO: Rewrite this to nuke database and recreate it from template
-	await db.delete(schema.sessions);
-	await db.delete(schema.users);
-	await db.delete(schema.orderDetails);
-	await db.delete(schema.orders);
-	await db.delete(schema.orderDetailsStatus);
-	await db.delete(schema.purchaseOrderDetails);
-	await db.delete(schema.purchaseOrders);
-	await db.delete(schema.purchaseOrderStatus);
-	await db.delete(schema.contacts);
-	await db.delete(schema.companies);
-	await db.delete(schema.companyTypes);
-	await db.delete(schema.regions);
-	await db.delete(schema.taxStatus);
-	await db.delete(schema.orderStatus);
-	await db.delete(schema.stock);
-	await db.delete(schema.products);
-	await db.delete(schema.categories);
-	await db.delete(schema.employeePrivileges);
-	await db.delete(schema.privileges);
-	await db.delete(schema.employees);
-	await db.delete(schema.titles);
+	await db.transaction(async (tx) => {
+		await db.delete(schema.sessions);
+		await db.delete(schema.users);
+		await db.delete(schema.orderDetails);
+		await db.delete(schema.orders);
+		await db.delete(schema.orderDetailsStatus);
+		await db.delete(schema.purchaseOrderDetails);
+		await db.delete(schema.purchaseOrders);
+		await db.delete(schema.purchaseOrderStatus);
+		await db.delete(schema.productVendors);
+		await db.delete(schema.contacts);
+		await db.delete(schema.stock);
+		await db.delete(schema.products);
+		await db.delete(schema.companies);
+		await db.delete(schema.companyTypes);
+		await db.delete(schema.regions);
+		await db.delete(schema.taxStatus);
+		await db.delete(schema.orderStatus);
+		await db.delete(schema.categories);
+		await db.delete(schema.employeePrivileges);
+		await db.delete(schema.privileges);
+		await db.delete(schema.employees);
+		await db.delete(schema.titles);
+	});
 }
 
 async function main() {
@@ -452,9 +455,6 @@ async function main() {
 			unitCost: faker.commerce.price(),
 			targetLevel: faker.number.int({ min: 10, max: 50 }),
 			unitPrice: faker.commerce.price(),
-			vendorId:
-				createdCompanies[Math.floor(Math.random() * createdCompanies.length)]
-					.companyId,
 		};
 		products.push(product);
 	}
@@ -463,6 +463,23 @@ async function main() {
 		.values(products)
 		.onConflictDoNothing({ target: schema.products.productCode })
 		.returning();
+
+	//* Product vendors
+	const productVendors: InferInsertModel<typeof schema.productVendors>[] = [];
+	const vendors = createdCompanies.filter((c) => c.companyTypeId === 3);
+	for (let i = 0; i < 20; i++) {
+		const productId =
+			createdProducts[Math.floor(Math.random() * createdProducts.length)]
+				.productId;
+		const vendorId =
+			vendors[Math.floor(Math.random() * vendors.length)].companyId;
+		const productVendor: InferInsertModel<typeof schema.productVendors> = {
+			productId: productId,
+			vendorId: vendorId,
+		};
+		productVendors.push(productVendor);
+	}
+	await db.insert(schema.productVendors).values(productVendors);
 
 	//* Contacts
 	const contacts: InferInsertModel<typeof schema.contacts>[] = [];
@@ -598,9 +615,7 @@ async function main() {
 	const purchaseOrders: InferInsertModel<typeof schema.purchaseOrders>[] = [];
 	for (let i = 0; i < 20; i++) {
 		const purchaseOrder: InferInsertModel<typeof schema.purchaseOrders> = {
-			vendorId:
-				createdCompanies[Math.floor(Math.random() * createdCompanies.length)]
-					.companyId,
+			vendorId: vendors[Math.floor(Math.random() * vendors.length)].companyId,
 			submittedBy:
 				createdEmployees[Math.floor(Math.random() * createdEmployees.length)]
 					.employeeId,

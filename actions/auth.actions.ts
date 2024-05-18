@@ -1,6 +1,6 @@
 "use server";
 import { db } from "@/db/client";
-import { userTable } from "@/db/schema";
+import { users } from "@/db/schema";
 import { lucia, validateRequest } from "@/lib/auth";
 import { wait } from "@/lib/utils";
 import { eq } from "drizzle-orm";
@@ -30,8 +30,8 @@ export async function login(prevState: FormState, formData: FormData) {
 
 	const rows = await db
 		.select()
-		.from(userTable)
-		.where(eq(userTable.username, username));
+		.from(users)
+		.where(eq(users.username, username));
 
 	let foundUser = null;
 	if (rows.length > 0) {

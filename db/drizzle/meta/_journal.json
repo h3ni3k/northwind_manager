@@ -4,30 +4,9 @@
   "entries": [
     {
       "idx": 0,
-      "version": "5",
-      "when": 1712952559051,
-      "tag": "0000_short_groot",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1712960616533,
-      "tag": "0001_outstanding_shriek",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
       "version": "6",
-      "when": 1715789029967,
-      "tag": "0002_brief_adam_warlock",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "6",
-      "when": 1715794813817,
-      "tag": "0003_real_jamie_braddock",
+      "when": 1715881384955,
+      "tag": "0000_pretty_dagger",
       "breakpoints": true
     }
   ]

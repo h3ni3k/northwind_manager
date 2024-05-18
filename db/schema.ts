@@ -54,8 +54,8 @@ export const employees = pgTable(
 	"employees",
 	{
 		employeeId: serial("employee_id").primaryKey(),
-		lastName: varchar("last_name", { length: 30 }).notNull().default(" "),
-		firstName: varchar("first_name", { length: 30 }).notNull().default(" "),
+		lastName: varchar("last_name", { length: 30 }).notNull().default(""),
+		firstName: varchar("first_name", { length: 30 }).notNull().default(""),
 		emailAddress: varchar("email", { length: 255 }),
 		jobTitle: varchar("job_title", { length: 50 }),
 		primaryPhone: varchar("primary_phone", { length: 12 }),
@@ -174,6 +174,21 @@ export const regions = pgTable("regions", {
 	regionName: varchar("region_name", { length: 50 }),
 });
 
+export const productVendors = pgTable("product_vendors", {
+	productVendorId: serial("product_vendor_id").primaryKey(),
+	productId: integer("product_id").references(() => products.productId),
+	vendorId: integer("vendor_id").references(() => companies.companyId),
+	createdAt: timestamp("created_at", {
+		mode: "date",
+		withTimezone: true,
+	})
+		.notNull()
+		.defaultNow(),
+	modifiedAt: timestamp("modified_at", { mode: "date", withTimezone: true })
+		.notNull()
+		.defaultNow(),
+});
+
 export const taxStatus = pgTable("tax_status", {
 	taxStatusId: serial("tax_status_id").primaryKey(),
 	taxStatus: varchar("tax_status", { length: 50 }).notNull(),
@@ -216,7 +231,6 @@ export const products = pgTable(
 		})
 			.notNull()
 			.defaultNow(),
-		vendorId: integer("vendor_id").references(() => companies.companyId),
 		modifiedAt: timestamp("modified_at", {
 			mode: "date",
 			withTimezone: true,
@@ -465,6 +479,7 @@ export const companiesRelations = relations(companies, ({ one, many }) => ({
 		fields: [companies.regionId],
 		references: [regions.regionId],
 	}),
+	productVendors: many(productVendors),
 	companyType: one(companyTypes, {
 		fields: [companies.companyTypeId],
 		references: [companyTypes.companyTypeId],
@@ -475,7 +490,6 @@ export const companiesRelations = relations(companies, ({ one, many }) => ({
 	}),
 	customer: many(orders, { relationName: "customer" }),
 	shipper: many(orders, { relationName: "shipper" }),
-	products: many(products, { relationName: "products" }),
 }));
 
 export const taxStatusRelations = relations(taxStatus, ({ many }) => ({
@@ -498,15 +512,23 @@ export const regionRelations = relations(regions, ({ one, many }) => ({
 	company: many(companies),
 }));
 
+export const productVendorsRelations = relations(productVendors, ({ one }) => ({
+	companies: one(companies, {
+		fields: [productVendors.vendorId],
+		references: [companies.companyId],
+	}),
+	products: one(products, {
+		fields: [productVendors.productId],
+		references: [products.productId],
+	}),
+}));
+
 export const categoriesRelations = relations(categories, ({ one, many }) => ({
 	products: many(products),
 }));
 
 export const productsRelations = relations(products, ({ one, many }) => ({
-	vendor: one(companies, {
-		fields: [products.vendorId],
-		references: [companies.companyId],
-	}),
+	vendor: many(productVendors),
 	category: one(categories, {
 		fields: [products.categoryId],
 		references: [categories.categoryId],
