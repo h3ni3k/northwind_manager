@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { log } from "console";
 import Image from "next/image";
@@ -10,7 +11,6 @@ import {
 	useSelectedLayoutSegments,
 } from "next/navigation";
 import React from "react";
-import { Button } from "./ui/button";
 
 type SidebarItemProps = {
 	href: string;
@@ -25,9 +25,9 @@ export default function SidebarItem({
 	icon,
 	className,
 }: SidebarItemProps) {
-	const currentPath = usePathname();
+	const currentSegment = useSelectedLayoutSegment();
 
-	const active = href === currentPath;
+	const active = href === `/${currentSegment}`;
 
 	return (
 		<Link

@@ -1,26 +1,4 @@
 "use client";
-
-import {
-	ColumnDef,
-	ExpandedState,
-	RowData,
-	SortingState,
-	VisibilityState,
-	flexRender,
-	getCoreRowModel,
-	getExpandedRowModel,
-	getPaginationRowModel,
-	getSortedRowModel,
-	useReactTable,
-} from "@tanstack/react-table";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Button } from "../ui/button";
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import {
 	Table,
 	TableBody,
@@ -28,20 +6,32 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "../ui/table";
-import DataTablePagination from "./DataTablePagination";
+} from "@/components/ui/table";
+import {
+	ColumnDef,
+	ColumnHelper,
+	SortingState,
+	createColumnHelper,
+	flexRender,
+	getCoreRowModel,
+	getPaginationRowModel,
+	getSortedRowModel,
+	useReactTable,
+} from "@tanstack/react-table";
+import { useState } from "react";
+import { Button } from "../ui/button";
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
+	showFooter?: boolean;
 }
 
-export default function DataTable<TData, TValue>({
+export function DataTable<TData, TValue>({
 	columns,
 	data,
+	showFooter = true,
 }: DataTableProps<TData, TValue>) {
-	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-	const [rowSelection, setRowSelection] = useState({});
 	const [sorting, setSorting] = useState<SortingState>([]);
 
 	const table = useReactTable({
@@ -49,46 +39,15 @@ export default function DataTable<TData, TValue>({
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
-		getSortedRowModel: getSortedRowModel(),
-		getExpandedRowModel: getExpandedRowModel(),
-		onColumnVisibilityChange: setColumnVisibility,
-		onRowSelectionChange: setRowSelection,
 		onSortingChange: setSorting,
+		getSortedRowModel: getSortedRowModel(),
 		state: {
-			columnVisibility,
-			rowSelection,
 			sorting,
 		},
 	});
 
 	return (
-		<section>
-			<div>
-				<DropdownMenu>
-					<DropdownMenuTrigger asChild>
-						<Button variant={"outline"} className="ml-auto">
-							Columns
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent align="end">
-						{table
-							.getAllColumns()
-							.filter((c) => c.getCanHide())
-							.map((c) => {
-								return (
-									<DropdownMenuCheckboxItem
-										key={c.id}
-										className="capitalize"
-										checked={c.getIsVisible()}
-										onCheckedChange={(v) => c.toggleVisibility(!!v)}
-									>
-										{c.id}
-									</DropdownMenuCheckboxItem>
-								);
-							})}
-					</DropdownMenuContent>
-				</DropdownMenu>
-			</div>
+		<div>
 			<div className="rounded-md border">
 				<Table>
 					<TableHeader>
@@ -110,7 +69,7 @@ export default function DataTable<TData, TValue>({
 						))}
 					</TableHeader>
 					<TableBody>
-						{table.getRowModel().rows.length ? (
+						{table.getRowModel().rows?.length ? (
 							table.getRowModel().rows.map((row) => (
 								<TableRow
 									key={row.id}
@@ -132,16 +91,49 @@ export default function DataTable<TData, TValue>({
 									colSpan={columns.length}
 									className="h-24 text-center"
 								>
-									No results.
+									No data.
 								</TableCell>
 							</TableRow>
 						)}
 					</TableBody>
 				</Table>
 			</div>
-			<DataTablePagination table={table} />
-
-			{/* {JSON.stringify(table.getState(), null, 4)} */}
-		</section>
+			{!!showFooter && (
+				<div className="flex items-center justify-end space-x-2 py-4">
+					<Button
+						variant={"outline"}
+						size={"sm"}
+						onClick={() => table.firstPage()}
+						disabled={!table.getCanPreviousPage()}
+					>
+						First
+					</Button>
+					<Button
+						variant={"outline"}
+						size={"sm"}
+						onClick={() => table.previousPage()}
+						disabled={!table.getCanPreviousPage()}
+					>
+						Previous
+					</Button>
+					<Button
+						variant={"outline"}
+						size={"sm"}
+						onClick={() => table.nextPage()}
+						disabled={!table.getCanNextPage()}
+					>
+						Next
+					</Button>
+					<Button
+						variant={"outline"}
+						size={"sm"}
+						onClick={() => table.lastPage()}
+						disabled={!table.getCanNextPage()}
+					>
+						Last
+					</Button>
+				</div>
+			)}
+		</div>
 	);
 }

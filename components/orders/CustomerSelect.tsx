@@ -1,12 +1,12 @@
 "use client";
-import { CompaniesSelect } from "@/db/types";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
+import { CompaniesSelect } from "@/db/types";
 
 export default function CustomerSelect({
 	currentCustomer,

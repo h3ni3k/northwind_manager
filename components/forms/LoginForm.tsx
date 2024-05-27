@@ -1,11 +1,6 @@
 "use client";
 import { login } from "@/actions/auth.actions";
 import { loginSchema } from "@/actions/auth.schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef } from "react";
-import { useFormState } from "react-dom";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import {
 	Form,
 	FormControl,
@@ -13,8 +8,13 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRef } from "react";
+import { useFormState } from "react-dom";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import SubmitButton from "./SubmitButton";
 
 export default function LoginForm() {

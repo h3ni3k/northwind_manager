@@ -1,9 +1,9 @@
 "use client";
 
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 import Link from "next/link";
-import { Card, CardContent } from "./ui/card";
 
 export default function DashboardCard({
 	children,
