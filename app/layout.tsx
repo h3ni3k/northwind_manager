@@ -1,6 +1,8 @@
+import ReactQueryProvider from "@/lib/providers";
 import { cn } from "@/lib/utils";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 const overusedGrotesk = localFont({
 	src: [
@@ -43,7 +45,12 @@ export default function RootLayout({
 }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
-			<body className={`${overusedGrotesk.className}`}>{children}</body>
+			<body className={`${overusedGrotesk.className}`}>
+				<ReactQueryProvider>
+					{children}
+					<Toaster />
+				</ReactQueryProvider>
+			</body>
 		</html>
 	);
 }
