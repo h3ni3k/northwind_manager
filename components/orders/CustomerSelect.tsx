@@ -1,4 +1,5 @@
 "use client";
+import { Companies } from "@/actions/companies.actions";
 import {
 	Select,
 	SelectContent,
@@ -11,7 +12,7 @@ import { CompaniesSelect } from "@/db/types";
 export default function CustomerSelect({
 	currentCustomer,
 	customers,
-}: { currentCustomer: string; customers: CompaniesSelect[] }) {
+}: { currentCustomer: string; customers: Companies[] }) {
 	console.log(customers.length);
 
 	return (

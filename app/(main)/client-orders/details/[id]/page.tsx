@@ -1,7 +1,5 @@
-import { getAllCompanies, getAllCustomers } from "@/actions/companies.actions";
+import { getCompanyByType } from "@/actions/companies.actions";
 import { getOrder, getOrderDetails } from "@/actions/orders.actions";
-import DataTable from "@/components/data-table/DataTable";
-import { columns } from "@/components/data-table/columns/order-details";
 import CustomerSelect from "@/components/orders/CustomerSelect";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,7 +24,7 @@ export default async function OrderDetailsPage({
 	if (!order) return <div>No order </div>;
 
 	const orderDetails = await getOrderDetails(Number(params.id));
-	const customers = await getAllCustomers();
+	const customers = await getCompanyByType(1);
 	return (
 		<section className="flex-1 p-4 grid grid-rows-2 gap-4">
 			<div className="grid grid-cols-3 gap-4">
@@ -63,12 +61,7 @@ export default async function OrderDetailsPage({
 
 				{/* <pre>{JSON.stringify(order, null, 2)}</pre> */}
 			</div>
-			<div>
-				{/* <pre>{JSON.stringify(orderDetails, null, 2)}</pre> */}
-				<div>
-					<DataTable columns={columns} data={orderDetails} />
-				</div>
-			</div>
+			<div>{/* <pre>{JSON.stringify(orderDetails, null, 2)}</pre> */}</div>
 		</section>
 	);
 }
