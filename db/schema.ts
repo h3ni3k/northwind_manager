@@ -23,7 +23,9 @@ export const paymentMethodsEnum = pgEnum("payment_method", [
 
 export const privileges = pgTable("privileges", {
 	privilegeId: serial("privilege_id").primaryKey(),
-	privileveName: varchar("privilege_name", { length: 50 }),
+	privileveName: varchar("privilege_name", { length: 50 })
+		.notNull()
+		.default(""),
 	createdAt: timestamp("created_at", {
 		mode: "date",
 		withTimezone: true,
@@ -37,8 +39,12 @@ export const privileges = pgTable("privileges", {
 
 export const employeePrivileges = pgTable("employee_privileges", {
 	employeePrivilegeId: serial("employee_privilege_id").primaryKey(),
-	employeeId: integer("employee_id").references(() => employees.employeeId),
-	privilegeId: integer("privilege_id").references(() => privileges.privilegeId),
+	employeeId: integer("employee_id")
+		.references(() => employees.employeeId)
+		.notNull(),
+	privilegeId: integer("privilege_id")
+		.references(() => privileges.privilegeId)
+		.notNull(),
 	createdAt: timestamp("created_at", {
 		mode: "date",
 		withTimezone: true,
@@ -56,13 +62,17 @@ export const employees = pgTable(
 		employeeId: serial("employee_id").primaryKey(),
 		lastName: varchar("last_name", { length: 30 }).notNull().default(""),
 		firstName: varchar("first_name", { length: 30 }).notNull().default(""),
-		emailAddress: varchar("email", { length: 255 }),
-		jobTitle: varchar("job_title", { length: 50 }),
-		primaryPhone: varchar("primary_phone", { length: 12 }),
-		secondaryPhone: varchar("secondary_phone", { length: 12 }),
+		emailAddress: varchar("email", { length: 255 }).notNull().default(""),
+		jobTitle: varchar("job_title", { length: 50 }).notNull().default(""),
+		primaryPhone: varchar("primary_phone", { length: 12 })
+			.notNull()
+			.default(""),
+		secondaryPhone: varchar("secondary_phone", { length: 12 })
+			.notNull()
+			.default(""),
 		titleId: integer("title_id").references(() => titles.titleId),
-		notes: text("notes"),
-		attachments: text("attachments"),
+		notes: text("notes").notNull().default(""),
+		attachments: text("attachments").notNull().default(""),
 		supervisorId: integer("supervisor_id").references(
 			(): AnyPgColumn => employees.employeeId,
 		),
@@ -87,7 +97,7 @@ export const employees = pgTable(
 
 export const titles = pgTable("titles", {
 	titleId: serial("title_id").primaryKey(),
-	title: varchar("title", { length: 255 }),
+	title: varchar("title", { length: 255 }).notNull().default(""),
 });
 
 export const contacts = pgTable(
@@ -95,13 +105,17 @@ export const contacts = pgTable(
 	{
 		contactId: serial("contact_id").primaryKey(),
 		companyId: integer("company_id").references(() => companies.companyId),
-		lastName: varchar("last_name", { length: 30 }),
-		firstName: varchar("first_name", { length: 30 }),
-		emailAddress: varchar("email", { length: 255 }),
-		jobTitle: varchar("job_title", { length: 50 }),
-		primaryPhone: varchar("primary_phone", { length: 12 }),
-		secondaryPhone: varchar("secondary_phone", { length: 12 }),
-		notes: text("notes"),
+		lastName: varchar("last_name", { length: 30 }).notNull().default(""),
+		firstName: varchar("first_name", { length: 30 }).notNull().default(""),
+		emailAddress: varchar("email", { length: 255 }).notNull().default(""),
+		jobTitle: varchar("job_title", { length: 50 }).notNull().default(""),
+		primaryPhone: varchar("primary_phone", { length: 12 })
+			.notNull()
+			.default(""),
+		secondaryPhone: varchar("secondary_phone", { length: 12 })
+			.notNull()
+			.default(""),
+		notes: text("notes").notNull().default(""),
 		createdAt: timestamp("created_at", {
 			mode: "date",
 			withTimezone: true,
@@ -125,19 +139,23 @@ export const companies = pgTable(
 	{
 		companyId: serial("company_id").primaryKey(),
 		companyName: varchar("company_name", { length: 50 }).notNull(),
-		companyTypeId: integer("company_type_id").references(
-			() => companyTypes.companyTypeId,
-		),
-		businessPhone: varchar("business_phone", { length: 20 }),
-		address: varchar("address", { length: 255 }),
-		city: varchar("city", { length: 255 }),
-		regionId: integer("region_id").references(() => regions.regionId),
-		postalCode: varchar("postal_code", { length: 10 }),
-		website: text("website"),
-		notes: text("notes"),
-		taxStatusId: integer("tax_status_id").references(
-			() => taxStatus.taxStatusId,
-		),
+		companyTypeId: integer("company_type_id")
+			.references(() => companyTypes.companyTypeId)
+			.notNull(),
+		businessPhone: varchar("business_phone", { length: 20 })
+			.notNull()
+			.default(""),
+		address: varchar("address", { length: 255 }).notNull().default(""),
+		city: varchar("city", { length: 255 }).notNull().default(""),
+		regionId: integer("region_id")
+			.references(() => regions.regionId)
+			.notNull(),
+		postalCode: varchar("postal_code", { length: 10 }).notNull().default(""),
+		website: text("website").notNull().default(""),
+		notes: text("notes").notNull().default(""),
+		taxStatusId: integer("tax_status_id")
+			.references(() => taxStatus.taxStatusId)
+			.notNull(),
 		contactId: integer("contact_id"),
 		createdAt: timestamp("created_at", {
 			mode: "date",
@@ -156,7 +174,7 @@ export const companies = pgTable(
 
 export const companyTypes = pgTable("company_types", {
 	companyTypeId: serial("company_type_id").primaryKey(),
-	companyType: varchar("company_type", { length: 50 }),
+	companyType: varchar("company_type", { length: 50 }).notNull().default(""),
 	createdAt: timestamp("created_at", {
 		mode: "date",
 		withTimezone: true,
@@ -170,14 +188,18 @@ export const companyTypes = pgTable("company_types", {
 
 export const regions = pgTable("regions", {
 	regionId: serial("region_id").primaryKey(),
-	regionAbbrev: varchar("region_abbrev", { length: 3 }),
-	regionName: varchar("region_name", { length: 50 }),
+	regionAbbrev: varchar("region_abbrev", { length: 3 }).notNull().default(""),
+	regionName: varchar("region_name", { length: 50 }).notNull().default(""),
 });
 
 export const productVendors = pgTable("product_vendors", {
 	productVendorId: serial("product_vendor_id").primaryKey(),
-	productId: integer("product_id").references(() => products.productId),
-	vendorId: integer("vendor_id").references(() => companies.companyId),
+	productId: integer("product_id")
+		.references(() => products.productId)
+		.notNull(),
+	vendorId: integer("vendor_id")
+		.references(() => companies.companyId)
+		.notNull(),
 	createdAt: timestamp("created_at", {
 		mode: "date",
 		withTimezone: true,
@@ -191,7 +213,7 @@ export const productVendors = pgTable("product_vendors", {
 
 export const taxStatus = pgTable("tax_status", {
 	taxStatusId: serial("tax_status_id").primaryKey(),
-	taxStatus: varchar("tax_status", { length: 50 }).notNull(),
+	taxStatus: varchar("tax_status", { length: 50 }).notNull().default(""),
 	createdAt: timestamp("created_at", {
 		mode: "date",
 		withTimezone: true,
@@ -209,8 +231,8 @@ export const products = pgTable(
 	{
 		productId: serial("product_id").primaryKey(),
 		productCode: varchar("product_code", { length: 20 }).unique(),
-		productName: varchar("product_name", { length: 50 }),
-		productDesc: varchar("product_desc", { length: 255 }),
+		productName: varchar("product_name", { length: 50 }).notNull().default(""),
+		productDesc: varchar("product_desc", { length: 255 }).notNull().default(""),
 		unitCost: numeric("unit_cost", {
 			precision: 10,
 			scale: 4,
@@ -219,12 +241,18 @@ export const products = pgTable(
 			precision: 10,
 			scale: 4,
 		}).default(sql`0::numeric`),
-		reorderLevel: integer("reorder_level"),
-		targetLevel: integer("target_level"),
-		quantityPerUnit: varchar("quantity_per_unit", { length: 50 }),
+		reorderLevel: integer("reorder_level").default(sql`0::numeric`),
+		targetLevel: integer("target_level").default(sql`0::numeric`),
+		quantityPerUnit: varchar("quantity_per_unit", { length: 50 })
+			.notNull()
+			.default(""),
 		discontinued: boolean("discontinued").default(false),
-		minimumReorderQuantity: integer("minimum_reorder_quantity"),
-		categoryId: integer("category_id").references(() => categories.categoryId),
+		minimumReorderQuantity: integer("minimum_reorder_quantity").default(
+			sql`0::numeric`,
+		),
+		categoryId: integer("category_id")
+			.references(() => categories.categoryId)
+			.notNull(),
 		createdAt: timestamp("created_at", {
 			mode: "date",
 			withTimezone: true,
@@ -243,9 +271,9 @@ export const products = pgTable(
 
 export const categories = pgTable("categories", {
 	categoryId: serial("category_id").primaryKey(),
-	categoryName: varchar("category_name", { length: 255 }),
-	categoryCode: varchar("category_code", { length: 3 }),
-	categoryDesc: varchar("category_desc", { length: 255 }),
+	categoryName: varchar("category_name", { length: 255 }).notNull().default(""),
+	categoryCode: varchar("category_code", { length: 3 }).notNull().default(""),
+	categoryDesc: varchar("category_desc", { length: 255 }).notNull().default(""),
 	categoryImage: text("category_image"),
 	createdAt: timestamp("created_at", {
 		mode: "date",
@@ -263,9 +291,11 @@ export const stock = pgTable("stock", {
 	stockTakeDate: date("stock_take_date", { mode: "date" })
 		.notNull()
 		.defaultNow(),
-	productId: integer("product_id").references(() => products.productId),
-	quantityOnHand: integer("quantity_on_hand"),
-	expectedQuantity: integer("expected_quantity"),
+	productId: integer("product_id")
+		.references(() => products.productId)
+		.notNull(),
+	quantityOnHand: integer("quantity_on_hand").default(sql`0::numeric`),
+	expectedQuantity: integer("expected_quantity").default(sql`0::numeric`),
 	createdAt: timestamp("created_at", {
 		mode: "date",
 		withTimezone: true,
@@ -295,7 +325,7 @@ export const orders = pgTable("orders", {
 		.notNull(),
 	paymentMethod: paymentMethodsEnum("payment_method").notNull(),
 	paidDate: date("paid_date", { mode: "date" }),
-	notes: text("notes"),
+	notes: text("notes").notNull().default(""),
 	orderStatusId: integer("order_status_id")
 		.references(() => orderStatus.orderStatusId)
 		.notNull(),
@@ -312,8 +342,12 @@ export const orders = pgTable("orders", {
 
 export const orderStatus = pgTable("order_status", {
 	orderStatusId: serial("order_status_id").primaryKey(),
-	orderStatusCode: varchar("order_status_code", { length: 4 }).notNull(),
-	orderStatusName: varchar("order_status_name", { length: 50 }).notNull(),
+	orderStatusCode: varchar("order_status_code", { length: 4 })
+		.notNull()
+		.default(""),
+	orderStatusName: varchar("order_status_name", { length: 50 })
+		.notNull()
+		.default(""),
 	sortOrder: integer("sord_order").default(0),
 	createdAt: timestamp("created_at", {
 		mode: "date",
@@ -335,11 +369,13 @@ export const orderDetails = pgTable("order_details", {
 		.notNull()
 		.references(() => products.productId),
 	quantity: integer("quantity").default(0),
-	unitPrice: numeric("unit_price", { precision: 10, scale: 4 }),
-	discount: numeric("discount", { precision: 4, scale: 2 }),
-	orderDetailStatusId: integer("order_details_status_id").references(
-		() => orderDetailsStatus.orderDetailsStatusId,
-	),
+	unitPrice: numeric("unit_price", { precision: 10, scale: 4 }).default("0.00"),
+	discount: numeric("discount", { precision: 4, scale: 2 })
+		.notNull()
+		.default("0.00"),
+	orderDetailStatusId: integer("order_details_status_id")
+		.references(() => orderDetailsStatus.orderDetailsStatusId)
+		.notNull(),
 	createdAt: timestamp("created_at", {
 		mode: "date",
 		withTimezone: true,
@@ -353,7 +389,9 @@ export const orderDetails = pgTable("order_details", {
 
 export const orderDetailsStatus = pgTable("order_details_status", {
 	orderDetailsStatusId: serial("order_details_status_id").primaryKey(),
-	orderDetailsStatusName: varchar("order_details_status_name", { length: 50 }),
+	orderDetailsStatusName: varchar("order_details_status_name", { length: 50 })
+		.notNull()
+		.default(""),
 	sortOrder: integer("sort_order").default(0),
 	createdAt: timestamp("created_at", {
 		mode: "date",
@@ -368,18 +406,35 @@ export const orderDetailsStatus = pgTable("order_details_status", {
 
 export const purchaseOrders = pgTable("purchase_orders", {
 	purchaseOrderId: serial("purchase_order_id").primaryKey(),
-	vendorId: integer("vendor_id").references(() => companies.companyId),
-	submittedBy: integer("submitted_by").references(() => employees.employeeId),
-	submittedDate: date("submitted_date", { mode: "date" }),
-	approvedBy: integer("approved_by").references(() => employees.employeeId),
+	vendorId: integer("vendor_id")
+		.references(() => companies.companyId)
+		.notNull(),
+	submittedBy: integer("submitted_by")
+		.references(() => employees.employeeId)
+		.notNull()
+		.default(0),
+	submittedDate: date("submitted_date", { mode: "date" })
+		.notNull()
+		.defaultNow(),
+	approvedBy: integer("approved_by")
+		.references(() => employees.employeeId)
+		.default(0),
 	approvedDate: date("approved_date", { mode: "date" }),
-	statusId: integer("status_id").references(() => purchaseOrderStatus.statusId),
+	statusId: integer("status_id")
+		.references(() => purchaseOrderStatus.statusId)
+		.notNull(),
 	receivedDate: date("received_date", { mode: "date" }),
-	shippingFee: numeric("shipping_fee", { precision: 10, scale: 4 }),
+	shippingFee: numeric("shipping_fee", { precision: 10, scale: 4 })
+		.notNull()
+		.default("0.00"),
 	paymentDate: date("payment_date", { mode: "date" }),
-	paymentAmount: numeric("payment_amount", { precision: 10, scale: 4 }),
-	paymentMethod: paymentMethodsEnum("payment_method"),
-	notes: text("notes"),
+	paymentAmount: numeric("payment_amount", { precision: 10, scale: 4 })
+		.notNull()
+		.default("0.00"),
+	paymentMethod: paymentMethodsEnum("payment_method")
+		.notNull()
+		.default("Bank Transfer"),
+	notes: text("notes").notNull().default(""),
 	createdAt: timestamp("created_at", {
 		mode: "date",
 		withTimezone: true,
@@ -392,12 +447,16 @@ export const purchaseOrders = pgTable("purchase_orders", {
 });
 export const purchaseOrderDetails = pgTable("purchase_order_details", {
 	purchaseOrderDetailId: serial("purchase_order_detail_id").primaryKey(),
-	purchaseOrderId: integer("purchase_order_id").references(
-		() => purchaseOrders.purchaseOrderId,
-	),
-	productId: integer("product_id").references(() => products.productId),
-	quantity: integer("quantity").default(0),
-	unitCost: numeric("unit_cost", { precision: 10, scale: 4 }),
+	purchaseOrderId: integer("purchase_order_id")
+		.references(() => purchaseOrders.purchaseOrderId)
+		.notNull(),
+	productId: integer("product_id")
+		.references(() => products.productId)
+		.notNull(),
+	quantity: integer("quantity").notNull().default(0),
+	unitCost: numeric("unit_cost", { precision: 10, scale: 4 })
+		.notNull()
+		.default("0.00"),
 	receivedDate: date("received_date", { mode: "date" }),
 	createdAt: timestamp("created_at", {
 		mode: "date",
@@ -412,7 +471,7 @@ export const purchaseOrderDetails = pgTable("purchase_order_details", {
 
 export const purchaseOrderStatus = pgTable("purchase_order_status", {
 	statusId: serial("status_id").primaryKey(),
-	statusName: varchar("status_name", { length: 50 }),
+	statusName: varchar("status_name", { length: 50 }).notNull().default(""),
 	sortOrder: integer("sort_order").default(0),
 	createdAt: timestamp("created_at", {
 		mode: "date",
@@ -427,9 +486,9 @@ export const purchaseOrderStatus = pgTable("purchase_order_status", {
 
 export const systemSetting = pgTable("system_settings", {
 	settingId: serial("setting_id").primaryKey(),
-	settingName: varchar("setting_name", { length: 50 }),
-	settingValue: varchar("setting_value", { length: 255 }),
-	settingDesc: varchar("setting_desc", { length: 255 }),
+	settingName: varchar("setting_name", { length: 50 }).notNull().default(""),
+	settingValue: varchar("setting_value", { length: 255 }).notNull().default(""),
+	settingDesc: varchar("setting_desc", { length: 255 }).notNull().default(""),
 	createdAt: timestamp("created_at", {
 		mode: "date",
 		withTimezone: true,
