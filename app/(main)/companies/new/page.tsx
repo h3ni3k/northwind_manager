@@ -3,7 +3,9 @@ import NewCompanyForm from "../../../../components/forms/companies/NewCompanyFor
 export default function NewCompanyPage() {
 	return (
 		<section className="flex-1 p-4">
-			<NewCompanyForm />
+			<div className="w-2/3">
+				<NewCompanyForm />
+			</div>
 		</section>
 	);
 }

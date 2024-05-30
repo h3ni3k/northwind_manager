@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useQuery } from "@tanstack/react-query";
+import { PlusIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -19,8 +20,8 @@ export default function CustomersPage() {
 	});
 
 	return (
-		<section className="flex-1 p-4">
-			<div className="flex flex-col justify-center items-start mb-4">
+		<section className="flex-1 p-4 overflow-y-scroll">
+			<div className="flex flex-row justify-between items-start mb-4">
 				<div className="p-4 flex flex-row justify-center">
 					Show:
 					<RadioGroup
@@ -47,10 +48,16 @@ export default function CustomersPage() {
 					</RadioGroup>
 				</div>
 				<div>
-					<Button>Create labels</Button>
-					<Button>Show filters</Button>
+					{/* 					<Button>Create labels</Button>
+					<Button>Show filters</Button> */}
 					<Button>
-						<Link href={"/companies/new"}>New company</Link>
+						<Link
+							href={"/companies/new"}
+							className="inline-flex items-center justify-center"
+						>
+							<PlusIcon className="size-5 mr-2" />
+							New company
+						</Link>
 					</Button>
 				</div>
 			</div>

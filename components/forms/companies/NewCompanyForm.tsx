@@ -23,27 +23,35 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { CompaniesInsert } from "@/db/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQuery } from "@tanstack/react-query";
-import { useRef } from "react";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import { useActionState, useRef } from "react";
 import { useFormState } from "react-dom";
-import {
-	ControllerFieldState,
-	ControllerRenderProps,
-	FieldValues,
-	SubmitHandler,
-	UseFormStateReturn,
-	useForm,
-} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { newCompanySchema } from "./formSchema";
 
-export default function NewCompanyForm(
-	/* { children }: { children: ReactNode } */
-) {
+export default function NewCompanyForm() {
 	const [state, formAction] = useFormState(addCompany, {
 		message: "",
+		fields: {},
+	});
+
+	const [companyTypes, regions, taxStatus] = useQueries({
+		queries: [
+			{
+				queryKey: ["companyTypes"],
+				queryFn: async () => await getCompanyTypes(),
+			},
+			{
+				queryKey: ["companyRegions"],
+				queryFn: async () => await getCompanyRegions(),
+			},
+			{
+				queryKey: ["companyTaxStatus"],
+				queryFn: async () => await getCompanyTaxStatus(),
+			},
+		],
 	});
 
 	const form = useForm<z.output<typeof newCompanySchema>>({
@@ -53,33 +61,6 @@ export default function NewCompanyForm(
 		},
 	});
 	const formRef = useRef<HTMLFormElement>(null);
-
-	const {
-		data: companyTypes,
-		isLoading: isCompanyTypesLoading,
-		isError: isCompanyTypesError,
-	} = useQuery({
-		queryFn: async () => await getCompanyTypes(),
-		queryKey: ["companyTypes"],
-	});
-
-	const {
-		data: regions,
-		isLoading: isRegionsLoading,
-		isError: isRegionsError,
-	} = useQuery({
-		queryFn: async () => await getCompanyRegions(),
-		queryKey: ["companyRegions"],
-	});
-
-	const {
-		data: taxStatus,
-		isLoading: isTaxStatusLoading,
-		isError: isTasStatusError,
-	} = useQuery({
-		queryFn: async () => await getCompanyTaxStatus(),
-		queryKey: ["companyTaxStatus"],
-	});
 
 	return (
 		<Form {...form}>
@@ -109,7 +90,7 @@ export default function NewCompanyForm(
 									</FormControl>
 									<SelectContent>
 										{!!companyTypes &&
-											companyTypes.map((companyType, i) => (
+											companyTypes.data?.map((companyType, i) => (
 												<SelectItem
 													key={companyType.companyTypeId}
 													value={`${companyType.companyTypeId}`}
@@ -182,7 +163,7 @@ export default function NewCompanyForm(
 									</FormControl>
 									<SelectContent>
 										{!!regions &&
-											regions?.map((region, i) => (
+											regions.data?.map((region, i) => (
 												<SelectItem
 													key={region.regionId}
 													value={`${region.regionId}`}
@@ -242,7 +223,7 @@ export default function NewCompanyForm(
 								</FormControl>
 								<SelectContent>
 									{!!taxStatus &&
-										taxStatus.map((status) => (
+										taxStatus.data?.map((status) => (
 											<SelectItem
 												key={status.taxStatusId}
 												value={`${status.taxStatusId}`}
