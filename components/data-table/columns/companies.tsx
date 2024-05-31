@@ -11,12 +11,21 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontalIcon } from "lucide-react";
+import Link from "next/link";
 import DataTableColumnHeader from "../DataTableColumnHeader";
 
 export const columns: ColumnDef<Companies>[] = [
 	{
 		accessorKey: "companyId",
 		header: () => <div>Comapany Id</div>,
+		cell: ({ row }) => {
+			const companyId = row.original.companyId;
+			return (
+				<div>
+					<Link href={`/companies/${companyId}`}>{companyId}</Link>
+				</div>
+			);
+		},
 	},
 	{
 		accessorKey: "companyName",

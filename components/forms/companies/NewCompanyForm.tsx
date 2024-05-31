@@ -24,8 +24,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueries, useQuery } from "@tanstack/react-query";
-import { useActionState, useRef } from "react";
+import { useQueries } from "@tanstack/react-query";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -60,16 +59,10 @@ export default function NewCompanyForm() {
 			...(state?.fields ?? {}),
 		},
 	});
-	const formRef = useRef<HTMLFormElement>(null);
 
 	return (
 		<Form {...form}>
-			<form
-				ref={formRef}
-				action={formAction}
-				onSubmit={form.handleSubmit(() => formRef.current?.submit())}
-				className="grid grid-cols-8 gap-y-2"
-			>
+			<form action={formAction} className="grid grid-cols-8 gap-y-2">
 				<div className="col-span-6 flex flex-row items-center justify-center space-x-2">
 					<div className="w-full">Company Id: XXX</div>
 					<FormField
