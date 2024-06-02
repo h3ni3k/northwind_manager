@@ -6,8 +6,14 @@ import {
 	updateCompanySchema,
 } from "@/components/forms/companies/formSchema";
 import { db } from "@/db/client";
-import { companies, companyTypes, regions, taxStatus } from "@/db/schema";
-import { CompaniesInsert, CompaniesSelect } from "@/db/types";
+import {
+	companies,
+	companyTypes,
+	contacts,
+	regions,
+	taxStatus,
+} from "@/db/schema";
+import { CompaniesInsert, CompaniesSelect, ContactsSelect } from "@/db/types";
 import { asc, eq } from "drizzle-orm";
 import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
@@ -205,4 +211,19 @@ export async function updateCompany(
 
 	revalidateTag("companies");
 	redirect(`/companies/${companyId}`);
+}
+
+export type CompanyContacts = Omit<ContactsSelect, "createdAt" | "modifiedAt">;
+
+export async function getCompanyContacts(
+	companyId: number,
+): Promise<CompanyContacts[]> {
+	return await db.query.contacts.findMany({
+		columns: {
+			createdAt: false,
+			modifiedAt: false,
+		},
+		where: eq(contacts.companyId, companyId),
+		orderBy: asc(contacts.contactId),
+	});
 }

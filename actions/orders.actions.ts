@@ -157,3 +157,58 @@ export async function getOrderDetails(
 		where: eq(orderDetails.orderId, orderId),
 	});
 }
+
+export type CompanyOrder = {
+	orderId: number;
+	employeeId: number;
+	orderDate: Date;
+	orderStatusId: number;
+	shipperId: number | null;
+	employee: {
+		employeeId: number;
+		firstName: string;
+		lastName: string;
+	};
+	shipper: {
+		companyName: string;
+	};
+	status: {
+		orderStatusCode: string;
+		orderStatusName: string;
+	};
+};
+
+export async function getCompanyOrders(
+	companyId: number,
+): Promise<CompanyOrder[]> {
+	return await db.query.orders.findMany({
+		columns: {
+			orderId: true,
+			employeeId: true,
+			orderDate: true,
+			orderStatusId: true,
+			shipperId: true,
+		},
+		with: {
+			employee: {
+				columns: {
+					employeeId: true,
+					firstName: true,
+					lastName: true,
+				},
+			},
+			shipper: {
+				columns: {
+					companyName: true,
+				},
+			},
+			status: {
+				columns: {
+					orderStatusCode: true,
+					orderStatusName: true,
+				},
+			},
+		},
+		where: eq(orders.customerId, companyId),
+	});
+}
