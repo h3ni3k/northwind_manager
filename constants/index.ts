@@ -1,5 +1,10 @@
 const navLinks = [
 	{
+		name: "Dashboard",
+		href: "/dashboard",
+		icon: "/icons/house.svg",
+	},
+	{
 		name: "Client Orders",
 		href: "/client-orders",
 		icon: "/icons/book-up.svg",

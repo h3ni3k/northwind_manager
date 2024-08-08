@@ -236,20 +236,24 @@ export const products = pgTable(
 		unitCost: numeric("unit_cost", {
 			precision: 10,
 			scale: 4,
-		}).default(sql`0::numeric`),
+		})
+			.notNull()
+			.default(sql`0::numeric`),
 		unitPrice: numeric("unit_price", {
 			precision: 10,
 			scale: 4,
-		}).default(sql`0::numeric`),
-		reorderLevel: integer("reorder_level").default(sql`0::numeric`),
-		targetLevel: integer("target_level").default(sql`0::numeric`),
+		})
+			.notNull()
+			.default(sql`0::numeric`),
+		reorderLevel: integer("reorder_level").notNull().default(sql`0::numeric`),
+		targetLevel: integer("target_level").notNull().default(sql`0::numeric`),
 		quantityPerUnit: varchar("quantity_per_unit", { length: 50 })
 			.notNull()
 			.default(""),
-		discontinued: boolean("discontinued").default(false),
-		minimumReorderQuantity: integer("minimum_reorder_quantity").default(
-			sql`0::numeric`,
-		),
+		discontinued: boolean("discontinued").notNull().default(false),
+		minimumReorderQuantity: integer("minimum_reorder_quantity")
+			.notNull()
+			.default(sql`0::numeric`),
 		categoryId: integer("category_id")
 			.references(() => categories.categoryId)
 			.notNull(),
